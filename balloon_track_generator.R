@@ -27,7 +27,7 @@ colnames(tlm_data)[9] <- "Log"
 tlm_data$Log <- NULL
 
 # get Unix epoch timestamps
-tlm_data$Timestamp <- format(as.POSIXct(tlm_data$Timestamp, tz = launch_timezone), tz = Sys.timezone())
+tlm_data$Timestamp <- as.POSIXct(format(as.POSIXct(tlm_data$Timestamp, tz = launch_timezone), tz = Sys.timezone()), tz = Sys.timezone())
 
 # get underlying terrain map using mean coordinates
 map <- get_map(location = c(lon = mean(tlm_data$Lon), lat = mean(tlm_data$Lat)), zoom = zoom_level, maptype = "terrain")

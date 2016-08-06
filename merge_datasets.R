@@ -22,10 +22,10 @@ colnames(tlm_data)[9] <- "Log"
 tlm_data$Log <- NULL
 
 # get Unix epoch timestamps for LINK-TLM
-tlm_data$Timestamp <- format(as.POSIXct(tlm_data$Timestamp, tz = launch_timezone), tz = Sys.timezone())
+tlm_data$Timestamp <- as.POSIXct(format(as.POSIXct(tlm_data$Timestamp, tz = launch_timezone), tz = Sys.timezone()), tz = Sys.timezone())
 
 # get Unix epoch timestamps for IRENE (which records in Zulu time)
-irene_data$Timestamp <- format(as.POSIXct(paste(irene_data$Date, irene_data$Time), format = "%m/%d/%y %H:%M:%S", tz = "Zulu"), tz = Sys.timezone())
+irene_data$Timestamp <- as.POSIXct(format(as.POSIXct(paste(irene_data$Date, irene_data$Time), format = "%m/%d/%y %H:%M:%S", tz = "Zulu"), tz = Sys.timezone()), tz = Sys.timezone())
 irene_data$Date <- NULL
 irene_data$Time <- NULL
 
