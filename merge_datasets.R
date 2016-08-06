@@ -18,8 +18,6 @@ irene_data$Unit <- NULL
 
 # read LINK-TLM data from CSV format
 tlm_data <- read.csv(tlm_file)
-colnames(tlm_data)[9] <- "Log"
-tlm_data$Log <- NULL
 
 # get Unix epoch timestamps for LINK-TLM
 tlm_data$Timestamp <- as.POSIXct(format(as.POSIXct(tlm_data$Timestamp, tz = launch_timezone), tz = Sys.timezone()), tz = Sys.timezone())
