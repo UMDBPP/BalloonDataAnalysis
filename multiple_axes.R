@@ -11,7 +11,7 @@ left_axis_name <- "Radiation (Counts per Minute)"
 title <- paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name)
 
 par(mar = c(5, 4, 4, 6) + 0.1)
-plot(bottom_axis, left_axis, pch = 16, axes = FALSE, xlab = "", ylab = "", type = "l", col = "blue", main = title)
+plot(bottom_axis, left_axis, pch = 16, axes = FALSE, xlab = "", ylab = "", type = "p", col = "blue", main = title)
 mtext(left_axis_name, side = 2, col = "blue", line = 2.5)
 axis(2, col.axis = "blue", las = 1)
 
