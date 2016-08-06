@@ -8,10 +8,10 @@ right_axis_name <- "Altitude (feet)"
 left_axis <- joined_data$Counts_Per_Minute
 left_axis_name <- "Radiation (Counts per Minute)"
 
-output_file_name <- paste(left_axis_name, right_axis_name, bottom_axis_name, sep = "_")
+title <- paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name)
 
 par(mar = c(5, 4, 4, 6) + 0.1)
-plot(bottom_axis, left_axis, pch = 16, axes = FALSE, xlab = "", ylab = "", type = "l", col = "blue", main = paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name))
+plot(bottom_axis, left_axis, pch = 16, axes = FALSE, xlab = "", ylab = "", type = "l", col = "blue", main = title)
 mtext(left_axis_name, side = 2, col = "blue", line = 2.5)
 axis(2, col.axis = "blue", las = 1)
 
@@ -35,5 +35,5 @@ legend("topleft", legend = c(left_axis_name, right_axis_name), text.col = c("blu
 #twoord.plot(ly = left_axis, ry = right_axis, lx = bottom_axis, rx = bottom_axis, main = paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name), ylab = left_axis_name, rylab = right_axis_name, xlab = bottom_axis_name)
 
 # save to PDF
-dev.copy(pdf, paste(launch_number, "/", launch_number, "_", output_file_name, ".pdf", sep = ""))
+dev.copy(pdf, paste(launch_number, "/", launch_number, "_", title, ".pdf", sep = ""))
 dev.off()
