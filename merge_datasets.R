@@ -12,6 +12,7 @@ irene_file <- paste(launch_number, "/", launch_number, "LaunchData", ".txt", sep
 
 # read IRENE data from CSV format
 irene_data <- read.csv(irene_file)
+colnames(irene_data) <- c("Date", "Time", "Counts_Per_Minute", "Unit")
 
 # remove unit column from IRENE data
 irene_data$Unit <- NULL
