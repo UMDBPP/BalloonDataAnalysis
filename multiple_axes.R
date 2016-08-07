@@ -28,6 +28,7 @@ axis.POSIXct(1,bottom_axis)
 mtext(bottom_axis_name, side = 1, col = "black", line = 2.5) 
 
 legend("topleft", legend = c(left_axis_name, right_axis_name), text.col = c("blue", "red"), pch = c(16, 15), col = c("blue", "red"))
+grid()
 
 # If you'd rather use plotrix (doesn't support POSIXct):
 #install.packages("plotrix")
