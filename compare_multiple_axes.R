@@ -1,18 +1,21 @@
+# This script compares measurements from different sources with DIFFERENT units (with possibly dissimilar dataset sizes) using linear approximation
+# in order for this to work, you must first perform an outer join (keep all data) of the data you want to compare into one joined dataset, sharing one key
 # taken from http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
 
-# axis definitions
 bottom_axis <- joined_data$Timestamp
 bottom_axis_name <- "Time (24hr)"
+
 left_axis <- joined_data$Counts_Per_Minute
 left_axis_name <- "Radiation (counts per minute)"
+
 right_axis <- joined_data$Altitude_m
 right_axis_name <- "Altitude (meters)"
 
-# other definitions
 domain <- c(min(tlm_data$Timestamp), max(tlm_data$Timestamp))
 title <- paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name)
 
-# start render code
+################################################################################
+
 par(mar = c(3, 3, 3, 4) + 0.1)
 plot(approxfun(bottom_axis, left_axis), xlim = domain, axes = FALSE, xlab = "", ylab = "", type = "l", col = "blue", main = title)
 points(bottom_axis, left_axis, pch = 16, cex = 0.5, col = "blue")
