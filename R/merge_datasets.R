@@ -8,7 +8,7 @@ irene_data <- parse_irene_data(paste(launch_number, "/", launch_number, "LaunchD
 ################################################################################
 
 #install.packages("measurements")
-library(measurements)
+require(measurements)
 
 # join tables (outer join with POSIX timestamp as key)
 outer_join <- merge(x = tlm_data, y = irene_data, by = c("Timestamp"), all = TRUE)

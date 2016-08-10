@@ -11,7 +11,7 @@ zoom_level <- 10 # 3 is world, 10 is city, 21 is street. May have to fine tune t
 ################################################################################
 
 #install.packages("ggmap")
-library(ggmap)
+require(ggmap)
 
 # read csv file
 tlm_data <- read.csv(input_filename)
