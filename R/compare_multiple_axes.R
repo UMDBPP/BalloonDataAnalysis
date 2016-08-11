@@ -1,48 +1,113 @@
-# This script compares measurements from different sources with DIFFERENT units (with possibly dissimilar dataset sizes) using linear approximation
-# in order for this to work, you must first perform an outer join (keep all data) of the data you want to compare into one joined dataset, sharing one key
-# taken from http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
+#' Compare Multiple Axes
+#'
+#' Plots measurements from different sources with DIFFERENT units (with possibly dissimilar dataset sizes) using linear approximation
+#' Data must share the same axis data! The best way to ensure this is for them to be in the same dataset and share a common field.
+#' taken from http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
+#' @param bottom_axis Shared x axis.
+#' @param measurement_1 First set of measurements.
+#' @param measurement_2 Second set of measurements.
+#' @param bottom_axis_name Defaults to "x".
+#' @param common_measurement_name Defaults to "y".
 
-bottom_axis <- joined_data$Timestamp
-bottom_axis_name <- "Time (24hr)"
+#' @param measurement_1_name Source of measurement_1 data.
+#' @param measurement_1_color Defaults to "red".
+#' @param measurement_2_name Source of measurement_2 data.
+#' @param measurement_2_color Defaults to "blue".
+#' @keywords
+#' @export
+#' @examples
+#' compare_multiple_axes(joined_data$Timestamp, joined_data$Counts_Per_Minute, joined_data$Altitude_m, domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)), bottom_axis_name = "Time (24hr)", measurement_1_name = "Radiation (counts per minute)", measurement_2_name = "Altitude (meters)")
 
-left_axis <- joined_data$Counts_Per_Minute
-left_axis_name <- "Radiation (counts per minute)"
+compare_multiple_axes <-
+    function(bottom_axis,
+             measurement_1,
+             measurement_2,
+             domain = NULL,
+             bottom_axis_name = "x",
+             common_measurement_name = "y",
+             measurement_1_name = "measurement_1",
+             measurement_1_color = "red",
+             measurement_2_name = "measurement_2",
+             measurement_2_color = "blue")
+    {
+        if (is.null(domain))
+        {
+            domain <- c(min(bottom_axis), max(bottom_axis))
+        }
 
-right_axis <- joined_data$Altitude_m
-right_axis_name <- "Altitude (meters)"
+        if (is.null(title))
+        {
+            title <-
+                paste(measurement_1_name,
+                      "and",
+                      measurement_2_name,
+                      "vs",
+                      bottom_axis_name)
+        }
 
-domain <- c(min(tlm_data$Timestamp), max(tlm_data$Timestamp))
-title <- paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name)
+        # If you'd rather use plotrix (doesn't support POSIXct axis):
+        #require(plotrix)
+        #twoord.plot(ly = measurement_1, ry = measurement_2, lx = bottom_axis, rx = bottom_axis, main = title, ylab = measurement_1_name, rylab = measurement_2_name, xlab = bottom_axis_name)
 
-################################################################################
+        par(mar = c(3, 3, 3, 4) + 0.1)
+        plot(
+            approxfun(bottom_axis, measurement_1),
+            xlim = domain,
+            axes = FALSE,
+            xlab = "",
+            ylab = "",
+            type = "l",
+            col = measurement_1_color,
+            main = title
+        )
+        points(
+            bottom_axis,
+            measurement_1,
+            pch = 16,
+            cex = 0.5,
+            col = measurement_1_color
+        )
 
-par(mar = c(3, 3, 3, 4) + 0.1)
-plot(approxfun(bottom_axis, left_axis), xlim = domain, axes = FALSE, xlab = "", ylab = "", type = "l", col = "blue", main = title)
-points(bottom_axis, left_axis, pch = 16, cex = 0.5, col = "blue")
+        #mtext(measurement_1_name, side = 2, col = "blue", line = 2.5)
+        axis(2, col.axis = "blue", las = 1)
 
-#mtext(left_axis_name, side = 2, col = "blue", line = 2.5)
-axis(2, col.axis = "blue", las = 1)
+        box()
+        par(new = TRUE)
 
-box()
-par(new = TRUE)
+        plot(
+            approxfun(bottom_axis, measurement_2),
+            xlim = domain,
+            xlab = "",
+            ylab = "",
+            axes = FALSE,
+            type = "l",
+            col = "red"
+        )
 
-plot(approxfun(bottom_axis, right_axis), xlim = domain, xlab = "", ylab = "", axes = FALSE, type = "l", col = "red")
-points(bottom_axis, right_axis, pch = 15, cex = 0.5, col = "red")
-# mtext(right_axis_name, side = 4, col = "red", line = 4)
-axis(4, col = "red", col.axis = "red", las = 1)
+        points(
+            bottom_axis,
+            measurement_2,
+            pch = 15,
+            cex = 0.5,
+            col = "red"
+        )
 
-axis.POSIXct(1,bottom_axis) # use axis.POSIXct for POSIXct datetime objects
-#axis(1, pretty(range(bottom_axis),10))
-#mtext(bottom_axis_name, side = 1, col = "black", line = 2.5) 
+        #mtext(measurement_2_name, side = 4, col = "red", line = 4)
+        axis(4,
+             col = "red",
+             col.axis = "red",
+             las = 1)
 
-legend("topleft", legend = c(left_axis_name, right_axis_name), text.col = c("blue", "red"), pch = c(16, 15), col = c("blue", "red"))
-grid()
+        axis.POSIXct(1, bottom_axis) # use axis.POSIXct for POSIXct datetime objects
+        #axis(1, pretty(range(bottom_axis),10))
+        #mtext(bottom_axis_name, side = 1, col = "black", line = 2.5)
 
-# If you'd rather use plotrix (doesn't support POSIXct axis):
-#install.packages("plotrix")
-#library(plotrix)
-#twoord.plot(ly = left_axis, ry = right_axis, lx = bottom_axis, rx = bottom_axis, main = paste(left_axis_name, "and", right_axis_name, "vs", bottom_axis_name), ylab = left_axis_name, rylab = right_axis_name, xlab = bottom_axis_name)
-
-# save to PDF
-dev.copy(pdf, paste(launch_number, "/", launch_number, "_", title, ".pdf", sep = ""))
-dev.off()
+        legend(
+            "topleft",
+            legend = c(measurement_1_name, measurement_2_name),
+            text.col = c("blue", "red"),
+            pch = c(16, 15),
+            col = c("blue", "red")
+        )
+        grid()
+    }
