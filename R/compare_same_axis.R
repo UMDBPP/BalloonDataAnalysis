@@ -5,6 +5,8 @@
 #' @param bottom_axis Shared x axis.
 #' @param measurement_1 First set of measurements.
 #' @param measurement_2 Second set of measurements.
+#' @param domain Domain of plot.
+#' @param range Range of plot.
 #' @param bottom_axis_name Defaults to "x".
 #' @param common_measurement_name Defaults to "y".
 #' @param measurement_1_name Source of measurement_1 data.
@@ -14,6 +16,7 @@
 #' @keywords
 #' @export
 #' @examples
+#' tlm_data <- parse_link_tlm_data("NS57_parsedPackets.txt")
 #' compare_same_axis(tlm_data$Timestamp, tlm_data$Ascent_Rate_m_s, tlm_data$Ground_Speed_m_s, bottom_axis_name = "Time (24hr)", common_measurement_name = "meters per second", measurement_1_name = "Ascent Rate", measurement_2_name = "Ground Speed")
 
 compare_same_axis <-

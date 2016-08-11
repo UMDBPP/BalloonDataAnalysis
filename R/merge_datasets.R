@@ -7,7 +7,7 @@
 #' @keywords
 #' @export
 #' @examples
-#' merge_datasets(tlm_data, irene_data)
+#' joined_data <- merge_datasets(parse_link_tlm_data("NS57_parsedPackets.txt"), parse_irene_data("NS57LaunchData.txt"))
 
 merge_datasets <- function(data_1, data_2, join_type = "outer")
 {

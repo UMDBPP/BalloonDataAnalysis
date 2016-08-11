@@ -6,9 +6,10 @@
 #' @param bottom_axis Shared x axis.
 #' @param measurement_1 First set of measurements.
 #' @param measurement_2 Second set of measurements.
+#' @param domain Domain of plot.
+#' @param range Range of plot.
 #' @param bottom_axis_name Defaults to "x".
 #' @param common_measurement_name Defaults to "y".
-
 #' @param measurement_1_name Source of measurement_1 data.
 #' @param measurement_1_color Defaults to "red".
 #' @param measurement_2_name Source of measurement_2 data.
@@ -16,6 +17,7 @@
 #' @keywords
 #' @export
 #' @examples
+#' joined_data <- merge_datasets(parse_link_tlm_data("NS57_parsedPackets.txt"), parse_irene_data("NS57LaunchData.txt"))
 #' compare_multiple_axes(joined_data$Timestamp, joined_data$Counts_Per_Minute, joined_data$Altitude_m, domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)), bottom_axis_name = "Time (24hr)", measurement_1_name = "Radiation (counts per minute)", measurement_2_name = "Altitude (meters)")
 
 compare_multiple_axes <-
@@ -23,6 +25,7 @@ compare_multiple_axes <-
              measurement_1,
              measurement_2,
              domain = NULL,
+             range = NULL,
              bottom_axis_name = "x",
              common_measurement_name = "y",
              measurement_1_name = "measurement_1",
@@ -33,6 +36,16 @@ compare_multiple_axes <-
         if (is.null(domain))
         {
             domain <- c(min(bottom_axis), max(bottom_axis))
+        }
+
+        if (is.null(range))
+        {
+            range <-
+                c(min(c(
+                    min(measurement_1), min(measurement_2)
+                )), max(c(
+                    max(measurement_1), max(measurement_2)
+                )))
         }
 
         if (is.null(title))
