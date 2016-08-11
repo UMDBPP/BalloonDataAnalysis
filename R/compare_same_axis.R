@@ -37,7 +37,12 @@ compare_same_axis <-
 
         if (is.null(range))
         {
-            range <- c(min(c(min(measurement_1), min(measurement_2))), max(c(max(measurement_1), max(measurement_2))))
+            range <-
+                c(min(c(
+                    min(measurement_1), min(measurement_2)
+                )), max(c(
+                    max(measurement_1), max(measurement_2)
+                )))
         }
 
         if (is.null(title))

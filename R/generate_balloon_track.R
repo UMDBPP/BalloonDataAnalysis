@@ -44,5 +44,5 @@ generate_balloon_track <-
             ),
             size = 2
         ) + labs(x = "Longitude", y = "Latitude", title = map_title) + theme(legend.title =
-                                                                             element_blank())
+                                                                                 element_blank())
     }
