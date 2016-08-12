@@ -7,7 +7,9 @@
 #' @keywords
 #' @export
 #' @examples
-#' joined_data <- merge_datasets(parse_link_tlm_data("NS57_parsedPackets.txt"), parse_irene_data("NS57LaunchData.txt"))
+#' tlm_data <- parse_link_tlm_data("NS57_parsedPackets.txt")
+#' irene_data <- parse_irene_data("NS57LaunchData.txt")
+#' joined_data <- merge_datasets(tlm_data, irene_data)
 
 merge_datasets <- function(data_1, data_2, join_type = "outer")
 {
@@ -22,7 +24,7 @@ merge_datasets <- function(data_1, data_2, join_type = "outer")
 
     if (join_type == "inner")
     {
-        # add IRENE data to LINK-TLM rows
+        # add missing data to LINK-TLM rows
         # TODO find a better way to interpolate data than "nearest past neighbor"
         while (anyNA(joined_data$Counts_Per_Minute))
         {
@@ -30,7 +32,7 @@ merge_datasets <- function(data_1, data_2, join_type = "outer")
         }
 
         # remove rows not belonging to LINK-TLM and write to CSV
-        joined_data <- subset(joined_data,!(is.na(Callsign)))
+        joined_data <- subset(joined_data, !(is.na(Callsign)))
     }
 
     return(joined_data)
