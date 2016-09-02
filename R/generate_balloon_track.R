@@ -1,0 +1,45 @@
+#' Generate Balloon Track
+#'
+#' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
+#' @param longitude List of longitudes. Required.
+#' @param latitude List of latitudes. Required.
+#' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".
+#' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
+#' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
+#' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
+#' @examples
+#' tlm_data <- parse_link_tlm_data("NS57_parsedPackets.txt")
+#' generate_balloon_track(tlm_data$Longitude, tlm_data$Latitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
+
+generate_balloon_track <-
+    function(longitude,
+             latitude,
+             point_color = "blue",
+             point_size = 2,
+             title = "Balloon Track",
+             zoom_level = 10)
+    {
+        require(ggmap)
+
+        # pass variables to the global environment so that ggmap can see them
+        point_color <<- point_color
+        point_size <<- point_size
+
+        # get underlying terrain map using mean coordinates
+        map <-
+            get_map(
+                location = c(lon = mean(longitude),
+                             lat = mean(latitude)),
+                zoom = zoom_level,
+                maptype = "terrain"
+            )
+
+        # render to plot viewer
+        ggmap(map) + geom_point(data = as.data.frame(cbind(lon = longitude, lat = latitude)),
+                                aes(
+                                    x = lon,
+                                    y = lat,
+                                    colour = point_color,
+                                    size = point_size
+                                )) + labs(x = "Longitude", y = "Latitude", title = title)
+    }
