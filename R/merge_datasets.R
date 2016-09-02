@@ -32,7 +32,7 @@ merge_datasets <- function(data_1, data_2, join_type = "outer")
         }
 
         # remove rows not belonging to LINK-TLM and write to CSV
-        joined_data <- subset(joined_data, !(is.na(Callsign)))
+        joined_data <- subset(joined_data,!(is.na(Callsign)))
     }
 
     return(joined_data)

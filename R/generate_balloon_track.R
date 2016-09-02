@@ -1,27 +1,29 @@
 #' Generate Balloon Track
 #'
-#' Plots measurements from different sources with DIFFERENT units (with possibly dissimilar dataset sizes) using linear approximation
-#' in order for this to work, you must first perform an outer join (keep all data) of the data you want to compare into one joined dataset, sharing one key
-#' taken from http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
-#' @param longitude
-#' @param latitude
-#' @param color
-#' @param size
+#' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
+#' @param longitude List of longitudes. Required.
+#' @param latitude List of latitudes. Required.
+#' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".
+#' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
 #' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
 #' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
-#' @keywords
-#' @export
 #' @examples
 #' tlm_data <- parse_link_tlm_data("NS57_parsedPackets.txt")
-#' generate_balloon_track(tlm_data$Longitude, tlm_data$Latitude, color = tlm_data$Altitude_m, title = "Altitude (meters)")
+#' generate_balloon_track(tlm_data$Longitude, tlm_data$Latitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
 
 generate_balloon_track <-
     function(longitude,
              latitude,
+             point_color = "blue",
+             point_size = 2,
              title = "Balloon Track",
              zoom_level = 10)
     {
         require(ggmap)
+
+        # pass variables to the global environment so that ggmap can see them
+        point_color <<- point_color
+        point_size <<- point_size
 
         # get underlying terrain map using mean coordinates
         map <-
@@ -33,12 +35,11 @@ generate_balloon_track <-
             )
 
         # render to plot viewer
-        ggmap(map) + geom_point(
-            data = as.data.frame(cbind(lon = longitude, lat = latitude)),
-            aes(
-                x = lon,
-                y = lat
-            ),
-            size = 2
-        ) + labs(x = "Longitude", y = "Latitude", title = title)
+        ggmap(map) + geom_point(data = as.data.frame(cbind(lon = longitude, lat = latitude)),
+                                aes(
+                                    x = lon,
+                                    y = lat,
+                                    colour = point_color,
+                                    size = point_size
+                                )) + labs(x = "Longitude", y = "Latitude", title = title)
     }
