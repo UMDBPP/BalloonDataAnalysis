@@ -15,7 +15,7 @@ generate_balloon_track <-
     function(longitude,
              latitude,
              point_color = "blue",
-             point_size = 2,
+             point_size = 3,
              title = "Balloon Track",
              zoom_level = 10)
     {
@@ -35,11 +35,11 @@ generate_balloon_track <-
             )
 
         # render to plot viewer
-        ggmap(map) + geom_point(data = as.data.frame(cbind(lon = longitude, lat = latitude)),
-                                aes(
-                                    x = lon,
-                                    y = lat,
-                                    colour = point_color,
-                                    size = point_size
-                                )) + labs(x = "Longitude", y = "Latitude", title = title)
+        ggmap(map) + geom_point(
+            data = as.data.frame(cbind(lon = longitude, lat = latitude)),
+            aes(x = lon,
+                y = lat,
+                colour = point_color),
+            size = point_size
+        ) + labs(x = "Longitude", y = "Latitude", title = title)
     }
