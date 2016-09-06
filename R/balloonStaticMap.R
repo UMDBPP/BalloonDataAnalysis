@@ -1,4 +1,4 @@
-#' Generate Balloon Track
+#' balloonStaticMap
 #'
 #' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 #' @param longitude List of longitudes. Required.
@@ -8,10 +8,10 @@
 #' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
 #' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
 #' @examples
-#' tlm_data <- parse_link_tlm_data("NS57_parsedPackets.txt")
-#' generate_balloon_track(tlm_data$Longitude, tlm_data$Latitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
+#' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
+#' balloonStaticMap(tlm_data$Longitude, tlm_data$Latitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
 
-generate_balloon_track <-
+balloonStaticMap <-
     function(longitude,
              latitude,
              point_color = "blue",
@@ -19,7 +19,7 @@ generate_balloon_track <-
              title = "Balloon Track",
              zoom_level = 10)
     {
-        require(ggmap)
+        requireNamespace("ggmap")
 
         # pass variables to the global environment so that ggmap can see them
         point_color <<- point_color
@@ -27,7 +27,7 @@ generate_balloon_track <-
 
         # get underlying terrain map using mean coordinates
         map <-
-            get_map(
+            ggmap::get_map(
                 location = c(lon = mean(longitude),
                              lat = mean(latitude)),
                 zoom = zoom_level,
@@ -35,7 +35,7 @@ generate_balloon_track <-
             )
 
         # render to plot viewer
-        ggmap(map) + geom_point(
+        ggmap::ggmap(map) + geom_point(
             data = as.data.frame(cbind(lon = longitude, lat = latitude)),
             aes(x = lon,
                 y = lat,

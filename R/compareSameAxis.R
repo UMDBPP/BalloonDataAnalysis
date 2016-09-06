@@ -1,4 +1,4 @@
-#' Compare Same Axis
+#' compareSameAxis
 #'
 #' Plots measurements from different sources with the same unit (with possibly dissimilar dataset sizes) using linear approximation
 #' in order for this to work, you must first perform an outer join (keep all data) of the data you want to compare into one joined dataset, sharing one key
@@ -16,10 +16,10 @@
 #' @keywords
 #' @export
 #' @examples
-#' tlm_data <- parse_link_tlm_data("NS57_parsedPackets.txt")
-#' compare_same_axis(tlm_data$Timestamp, tlm_data$Ascent_Rate_m_s, tlm_data$Ground_Speed_m_s, bottom_axis_name = "Time (24hr)", common_measurement_name = "meters per second", measurement_1_name = "Ascent Rate", measurement_2_name = "Ground Speed")
+#' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
+#' compareSameAxis(tlm_data$Timestamp, tlm_data$Ascent_Rate_m_s, tlm_data$Ground_Speed_m_s, bottom_axis_name = "Time (24hr)", common_measurement_name = "meters per second", measurement_1_name = "Ascent Rate", measurement_2_name = "Ground Speed")
 
-compare_same_axis <-
+compareSameAxis <-
     function(bottom_axis,
              measurement_1,
              measurement_2,
