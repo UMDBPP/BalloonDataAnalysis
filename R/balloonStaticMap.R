@@ -1,19 +1,19 @@
 #' balloonStaticMap
 #'
 #' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
-#' @param longitude List of longitudes. Required.
 #' @param latitude List of latitudes. Required.
+#' @param longitude List of longitudes. Required.
 #' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".
 #' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
 #' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
 #' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
 #' @examples
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' balloonStaticMap(tlm_data$Longitude, tlm_data$Latitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
+#' balloonStaticMap(tlm_data$Latitude, tlm_data$Longitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
 
 balloonStaticMap <-
-    function(longitude,
-             latitude,
+    function(latitude,
+             longitude,
              point_color = "blue",
              point_size = 3,
              title = "Balloon Track",
