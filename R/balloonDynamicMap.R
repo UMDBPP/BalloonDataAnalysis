@@ -7,6 +7,7 @@
 #' @param plot Whether to open the HTML in a web browser. Defaults to TRUE.
 #' @param output_html_file Write HTML map to this filepath if not null. Defaults to NULL.
 #' @examples
+#' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' balloonDynamicMap(tlm_data$Latitude, tlm_data$Longitude, tlm_data)
 

@@ -7,6 +7,7 @@
 #' @keywords
 #' @export
 #' @examples
+#' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
 

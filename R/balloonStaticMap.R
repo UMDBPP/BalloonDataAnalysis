@@ -8,6 +8,7 @@
 #' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
 #' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
 #' @examples
+#' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' balloonStaticMap(tlm_data$Latitude, tlm_data$Longitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
 
@@ -20,6 +21,7 @@ balloonStaticMap <-
              zoom_level = 10)
     {
         requireNamespace("ggmap")
+        requireNamespace("ggplot2")
 
         # pass variables to the global environment so that ggmap can see them
         point_color <<- point_color
@@ -35,11 +37,15 @@ balloonStaticMap <-
             )
 
         # render to plot viewer
-        ggmap::ggmap(map) + geom_point(
+        ggmap::ggmap(map) + ggplot2::geom_point(
             data = as.data.frame(cbind(lon = longitude, lat = latitude)),
-            aes(x = lon,
-                y = lat,
-                colour = point_color),
+            ggplot2::aes(x = lon,
+                         y = lat,
+                         colour = point_color),
             size = point_size
-        ) + labs(x = "Longitude", y = "Latitude", title = title)
+        ) + ggplot2::labs(x = "Longitude", y = "Latitude", title = title)
+
+        # remove global variables
+        rm(point_color)
+        rm(point_size)
     }

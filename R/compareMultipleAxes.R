@@ -17,10 +17,11 @@
 #' @keywords
 #' @export
 #' @examples
+#' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- balloonMergeDatasets(tlm_data, irene_data)
-#' compareMultipleAxes(joined_data$Timestamp, joined_data$Counts_Per_Minute, joined_data$Altitude_m, domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)), bottom_axis_name = "Time (24hr)", measurement_1_name = "Radiation (counts per minute)", measurement_2_name = "Altitude (meters)")
+#' outer_joined_data <- balloonMergeDatasets(tlm_data, irene_data)
+#' compareMultipleAxes(outer_joined_data$Timestamp, outer_joined_data$Counts_Per_Minute, outer_joined_data$Altitude_m, domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)), bottom_axis_name = "Time (24hr)", measurement_1_name = "Radiation (counts per minute)", measurement_2_name = "Altitude (meters)")
 
 compareMultipleAxes <-
     function(bottom_axis,

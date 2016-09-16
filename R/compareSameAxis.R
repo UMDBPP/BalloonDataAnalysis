@@ -16,6 +16,7 @@
 #' @keywords
 #' @export
 #' @examples
+#' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' compareSameAxis(tlm_data$Timestamp, tlm_data$Ascent_Rate_m_s, tlm_data$Ground_Speed_m_s, bottom_axis_name = "Time (24hr)", common_measurement_name = "meters per second", measurement_1_name = "Ascent Rate", measurement_2_name = "Ground Speed")
 

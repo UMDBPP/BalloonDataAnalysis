@@ -3,37 +3,39 @@
 #' Merges datasets, specifically from IRENE and LINK-TLM
 #' @param data_1 First dataset.
 #' @param data_2 Second dataset.
-#' @param join_type Outer or inner join. Defaults to "outer".
+#' @param key Key with which to join datasets.
+#' @param interpolate Whether to interpolate data for missing fields. Defaults to TRUE.
 #' @keywords
 #' @export
 #' @examples
+#' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- balloonMergeDatasets(tlm_data, irene_data)
+#' interpolated_joined_data <- balloonMergeDatasets(tlm_data, irene_data, "Timestamp")
+#' outer_joined_data <- balloonMergeDatasets(tlm_data, irene_data, "Timestamp", interpolate = FALSE)
 
 balloonMergeDatasets <-
-    function(data_1, data_2, join_type = "outer")
+    function(data_1, data_2, key, interpolate = FALSE)
     {
-        # join tables (outer join with POSIX timestamp as key)
+        # outer join tables by key
         joined_data <-
             merge(
-                x = tlm_data,
-                y = irene_data,
-                by = c("Timestamp"),
+                x = data_1,
+                y = data_2,
+                by = c(key),
                 all = TRUE
             )
 
-        if (join_type == "inner")
+        # interpolate using zoo package
+        if (interpolate)
         {
-            # add missing data to LINK-TLM rows
-            # TODO find a better way to interpolate data than "nearest past neighbor"
-            while (anyNA(joined_data$Counts_Per_Minute))
+            requireNamespace("zoo")
+            for (colname in colnames(joined_data))
             {
-                joined_data$Counts_Per_Minute[is.na(joined_data$Counts_Per_Minute)] = joined_data$Counts_Per_Minute[which(is.na(joined_data$Counts_Per_Minute)) - 1]
+                joined_data[[colname]] <-
+                    zoo::na.fill(zoo::na.approx(joined_data[[colname]], joined_data[[key]], na.rm = FALSE),
+                                 "extend")
             }
-
-            # remove rows not belonging to LINK-TLM and write to CSV
-            joined_data <- subset(joined_data, !(is.na(Callsign)))
         }
 
         return(joined_data)
