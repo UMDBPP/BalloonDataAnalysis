@@ -1,4 +1,4 @@
-#' balloonDynamicMap
+#' htmlPointsMap
 #'
 #' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 #' @param latitude List of latitudes. Required.
@@ -9,9 +9,9 @@
 #' @examples
 #' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' balloonDynamicMap(tlm_data$Latitude, tlm_data$Longitude, tlm_data)
+#' htmlPointsMap(tlm_data$Latitude, tlm_data$Longitude, tlm_data)
 
-balloonDynamicMap <-
+htmlPointsMap <-
     function(latitude,
              longitude,
              data_frame,

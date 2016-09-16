@@ -1,4 +1,4 @@
-#' compareSameAxis
+#' plotDisparateSizes
 #'
 #' Plots two series with the same unit (with possibly dissimilar dataset sizes) on the same graph using linear approximation
 #' Works best with outer joined data; balloonMergeDatasets(y1, y2)
@@ -18,7 +18,7 @@
 #' @examples
 #' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' compareSameAxis(
+#' plotDisparateSizes(
 #'     tlm_data$Timestamp,
 #'     tlm_data$Ascent_Rate_m_s,
 #'     tlm_data$Ground_Speed_m_s,
@@ -28,7 +28,7 @@
 #'     y2_name = "Ground Speed"
 #' )
 
-compareSameAxis <-
+plotDisparateSizes <-
     function(x,
              y1,
              y2,
@@ -50,11 +50,7 @@ compareSameAxis <-
         if (is.null(range))
         {
             range <-
-                c(min(c(
-                    min(y1), min(y2)
-                )), max(c(
-                    max(y1), max(y2)
-                )))
+                c(min(c(min(y1), min(y2))), max(c(max(y1), max(y2))))
         }
 
         if (is.null(title))
@@ -78,13 +74,11 @@ compareSameAxis <-
             main = title
         )
 
-        points(
-            x,
-            y1,
-            col = y1_color,
-            pch = 15,
-            cex = 0.5
-        )
+        points(x,
+               y1,
+               col = y1_color,
+               pch = 15,
+               cex = 0.5)
 
         f <- approxfun(x, y2)
 
@@ -93,13 +87,11 @@ compareSameAxis <-
               col = y2_color,
               add = TRUE)
 
-        points(
-            x,
-            y2,
-            col = y2_color,
-            pch = 16,
-            cex = 0.5
-        )
+        points(x,
+               y2,
+               col = y2_color,
+               pch = 16,
+               cex = 0.5)
 
         legend(
             "topleft",

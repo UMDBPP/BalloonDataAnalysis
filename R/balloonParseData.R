@@ -1,4 +1,4 @@
-#' balloonParseData
+#' parsePayloadData
 #'
 #' Parses and cleans data from IRENE given input data file.
 #' @param data_file Data file in CSV format.
@@ -8,10 +8,10 @@
 #' @export
 #' @examples
 #' library(balloonDataAnaylsis)
-#' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
+#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
+#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
 
-balloonParseData <-
+parsePayloadData <-
     function(data_file,
              data_source,
              launch_timezone = Sys.timezone())
