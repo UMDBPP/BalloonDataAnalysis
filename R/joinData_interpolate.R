@@ -1,4 +1,4 @@
-#' outerJoin
+#' joinData_interpolate
 #'
 #' Merges datasets, specifically from IRENE and LINK-TLM
 #' @param data_1 First dataset.
@@ -11,10 +11,10 @@
 #' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- outerJoin(tlm_data, irene_data, "Timestamp")
-#' joined_data_interpolated <- outerJoin(tlm_data, irene_data, "Timestamp", interpolate = TRUE)
+#' joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp")
+#' joined_data_interpolated <- joinData_interpolate(tlm_data, irene_data, "Timestamp", interpolate = TRUE)
 
-outerJoin <-
+joinData_interpolate <-
     function(data_1, data_2, key, interpolate = FALSE)
     {
         # outer join tables by key

@@ -1,4 +1,4 @@
-#' plotDisparateUnits
+#' plotMultiSeries_units
 #'
 #' Plots two series with different units that share a common key.
 #' Works best with interpolated data; balloonMergeDatasets(y1, y2, interpolate = TRUE)
@@ -24,7 +24,7 @@
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
 #' joined_data <- balloonMergeDatasets(tlm_data, irene_data, interpolate = TRUE)
-#' plotDisparateUnits(
+#' plotMultiSeries_units(
 #'     joined_data$Timestamp,
 #'     joined_data$Counts_Per_Minute,
 #'     joined_data$Altitude_m,
@@ -38,7 +38,7 @@
 #'     add_legend = TRUE
 #' )
 
-plotDisparateUnits <-
+plotMultiSeries_units <-
     function(x,
              y1,
              y2,

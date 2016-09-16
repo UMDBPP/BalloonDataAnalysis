@@ -1,4 +1,4 @@
-#' plotDisparateSizes
+#' plotMultiSeries_lengths
 #'
 #' Plots two series with the same unit (with possibly dissimilar dataset sizes) on the same graph using linear approximation
 #' Works best with outer joined data; balloonMergeDatasets(y1, y2)
@@ -18,7 +18,7 @@
 #' @examples
 #' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' plotDisparateSizes(
+#' plotMultiSeries_lengths(
 #'     tlm_data$Timestamp,
 #'     tlm_data$Ascent_Rate_m_s,
 #'     tlm_data$Ground_Speed_m_s,
@@ -28,7 +28,7 @@
 #'     y2_name = "Ground Speed"
 #' )
 
-plotDisparateSizes <-
+plotMultiSeries_lengths <-
     function(x,
              y1,
              y2,

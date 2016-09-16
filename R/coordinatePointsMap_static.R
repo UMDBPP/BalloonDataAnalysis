@@ -1,4 +1,4 @@
-#' staticPointsMap
+#' coordinatePointsMap_static
 #'
 #' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 #' @param latitude List of latitudes. Required.
@@ -10,9 +10,9 @@
 #' @examples
 #' library(balloonDataAnaylsis)
 #' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' staticPointsMap(tlm_data$Latitude, tlm_data$Longitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
+#' coordinatePointsMap_static(tlm_data$Latitude, tlm_data$Longitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
 
-staticPointsMap <-
+coordinatePointsMap_static <-
     function(latitude,
              longitude,
              point_color = "blue",
