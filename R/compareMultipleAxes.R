@@ -69,21 +69,53 @@ compareMultipleAxes <-
                 title <- paste(title, " (", y1_unit, ") and ", sep = "")
             }
 
-            title <- paste(title, y2_name, sep = "")
+            title <- paste(title, y2_name, " ", sep = "")
             if (!is.null(y2_unit))
             {
-                title <- paste(title, " (", y2_unit, ") vs ", sep = "")
+                title <- paste(title, "(", y2_unit, ") vs ", sep = "")
             }
 
-            title <- paste(title, x_name, sep = "")
+            title <- paste(title, x_name, " ", sep = "")
             if (!is.null(x_unit))
             {
-                title <- paste(title, " (", x_unit, ")", sep = "")
+                title <- paste(title, "(", x_unit, ")", sep = "")
             }
         }
 
-        # set plot margins to accomodate for labels
-        par(mar = c(4, 4, 4, 4) + 0.1)
+        # calculate plot margins
+        bottom_mar = 3
+        left_mar = 2
+        top_mar = 4
+        right_mar = 2
+
+        temp = max(y1)
+        while (temp >= 1)
+        {
+            temp = temp / 10
+            left_mar = left_mar + 1
+        }
+
+        temp = max(y2)
+        while (temp >= 1)
+        {
+            temp = temp / 10
+            right_mar = right_mar + 1
+        }
+
+        ratio = 0
+        if (left_mar > right_mar)
+        {
+            ratio = right_mar / left_mar
+        }
+        else if (right_mar > left_mar)
+        {
+            ratio = left_mar / right_mar
+        }
+        left_mar = left_mar * ratio
+        right_mar = right_mar * ratio
+
+        # set plot margins
+        par(mar = c(bottom_mar, left_mar, top_mar, right_mar))
 
         plot(
             x,
@@ -107,7 +139,7 @@ compareMultipleAxes <-
         mtext(y1_unit,
               side = 2,
               col = y1_color,
-              line = 3)
+              line = left_mar - 1)
 
         par(new = TRUE)
 
@@ -132,7 +164,7 @@ compareMultipleAxes <-
         mtext(y2_unit,
               side = 4,
               col = y2_color,
-              line = 3)
+              line = right_mar - 1)
 
         if (class(x)[1] == "POSIXct")
         {
@@ -142,10 +174,10 @@ compareMultipleAxes <-
         {
             axis(1, pretty(range(x), 10))
         }
-        mtext(x_name,
+        mtext(paste(x_name, " (", x_unit, ")", sep = ""),
               side = 1,
               col = "black",
-              line = 2.5)
+              line = bottom_mar - 1)
 
         # draw legend if needed
         if (add_legend)
