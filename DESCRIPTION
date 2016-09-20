@@ -1,12 +1,13 @@
 Package: BalloonDataAnalysis
 Type: Package
-Title: Parses and Analyzes Balloon Data
-Version: 0.1.0
+Title: Balloon Data Analysis
+Version: 1.0.0
 Authors@R: person("Zach", "Burnett", email = "zrb@umd.edu", role = c("aut", "cre"))
 Description: This package parses balloon data gathered by the University of
     Maryland Balloon Payload Program (UMDBPP). It specifically parses data from the
     LINK-TLM 900 mHz data receiver and from IRENE, a third party geiger counter with
     data logging features.
+Imports: ggplot2, ggmap, googleVis, measurements, zoo
 License: MIT
 LazyData: TRUE
 RoxygenNote: 5.0.1

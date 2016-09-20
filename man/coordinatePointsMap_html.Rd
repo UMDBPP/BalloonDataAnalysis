@@ -2,10 +2,10 @@
 % Please edit documentation in R/coordinatePointsMap_html.R
 \name{coordinatePointsMap_html}
 \alias{coordinatePointsMap_html}
-\title{coordinatePointsMap_html}
+\title{Plot coordinate pairs onto Google Maps HTML}
 \usage{
-coordinatePointsMap_html(latitude, longitude, data_frame, plot = TRUE,
-  output_html_file = NULL)
+coordinatePointsMap_html(latitude, longitude, data_frame, api_key = NULL,
+  plot = TRUE, output_html_file = NULL)
 }
 \arguments{
 \item{latitude}{List of latitudes. Required.}
@@ -22,8 +22,7 @@ coordinatePointsMap_html(latitude, longitude, data_frame, plot = TRUE,
 Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 }
 \examples{
-library(balloonDataAnaylsis)
-tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
+tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 coordinatePointsMap_html(tlm_data$Latitude, tlm_data$Longitude, tlm_data)
 }
 

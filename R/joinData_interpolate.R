@@ -1,18 +1,23 @@
-#' joinData_interpolate
+#' Join datasets and interpolate missing fields
 #'
 #' Merges datasets, specifically from IRENE and LINK-TLM
 #' @param data_1 First dataset.
 #' @param data_2 Second dataset.
 #' @param key Key with which to join datasets.
-#' @param interpolate Whether to interpolate data for missing fields. Defaults to FALSE.
-#' @keywords
+#' @param interpolate Wether to interpolate data. Defaults to FALSE.
 #' @export
+#' @importFrom zoo na.approx
+#' @importFrom zoo na.fill
 #' @examples
-#' library(balloonDataAnaylsis)
-#' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
+#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
+#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
 #' joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp")
-#' joined_data_interpolated <- joinData_interpolate(tlm_data, irene_data, "Timestamp", interpolate = TRUE)
+#' joined_data_interpolated <-
+#'      joinData_interpolate(tlm_data,
+#'                          irene_data,
+#'                          "Timestamp",
+#'                          interpolate = TRUE
+#'      )
 
 joinData_interpolate <-
     function(data_1, data_2, key, interpolate = FALSE)
@@ -29,7 +34,6 @@ joinData_interpolate <-
         # interpolate using zoo package
         if (interpolate)
         {
-            requireNamespace("zoo")
             for (colname in colnames(joined_data))
             {
                 joined_data[[colname]] <-

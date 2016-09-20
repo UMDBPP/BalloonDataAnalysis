@@ -1,4 +1,4 @@
-#' plotMultiSeries_units
+#' Plot multiple series with different units on the same axis
 #'
 #' Plots two series with different units that share a common key.
 #' Works best with interpolated data; balloonMergeDatasets(y1, y2, interpolate = TRUE)
@@ -17,14 +17,12 @@
 #' @param y2_color Defaults to "blue".
 #' @param title Title of plot. Defaults to "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)".
 #' @param add_legend Defaults to FALSE.
-#' @keywords
 #' @export
 #' @examples
-#' library(balloonDataAnaylsis)
-#' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- balloonMergeDatasets(tlm_data, irene_data, interpolate = TRUE)
-#' plotMultiSeries_units(
+#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
+#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
+#' joined_data <- joinData_interpolate(tlm_data, irene_data, interpolate = TRUE)
+#' plotMultiSeries_differentUnits(
 #'     joined_data$Timestamp,
 #'     joined_data$Counts_Per_Minute,
 #'     joined_data$Altitude_m,
@@ -38,7 +36,7 @@
 #'     add_legend = TRUE
 #' )
 
-plotMultiSeries_units <-
+plotMultiSeries_differentUnits <-
     function(x,
              y1,
              y2,

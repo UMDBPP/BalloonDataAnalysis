@@ -2,15 +2,17 @@
 % Please edit documentation in R/coordinatePointsMap_static.R
 \name{coordinatePointsMap_static}
 \alias{coordinatePointsMap_static}
-\title{coordinatePointsMap_static}
+\title{Plot coordinate pairs onto static map using ggplot2}
 \usage{
-coordinatePointsMap_static(latitude, longitude, point_color = "blue",
+coordinatePointsMap_static(latitude, longitude, api_key, point_color = "blue",
   point_size = 3, title = "Balloon Track", zoom_level = 10)
 }
 \arguments{
 \item{latitude}{List of latitudes. Required.}
 
 \item{longitude}{List of longitudes. Required.}
+
+\item{api_key}{Google Maps API Key. Required.}
 
 \item{point_color}{Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".}
 
@@ -24,8 +26,13 @@ coordinatePointsMap_static(latitude, longitude, point_color = "blue",
 Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 }
 \examples{
-library(balloonDataAnaylsis)
-tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-coordinatePointsMap_static(tlm_data$Latitude, tlm_data$Longitude, point_color = tlm_data$Altitude_m, title = "Altitude (meters)")
+tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
+coordinatePointsMap_static(
+    tlm_data$Latitude,
+    tlm_data$Longitude,
+    api_key = "YOUR_API_KEY",
+    point_color = tlm_data$Altitude_m,
+    title = "Altitude (meters)"
+)
 }
 

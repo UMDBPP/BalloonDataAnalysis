@@ -1,24 +1,22 @@
-#' parsePayloadData
+#' Parse UMDBPP payload data from file
 #'
-#' Parses and cleans data from IRENE given input data file.
+#' Parses and cleans data from given data file, assuming format of given payload.
 #' @param data_file Data file in CSV format.
-#' @param data_source Source of data, can be LINK-TLM or IRENE
+#' @param payload Payload from which data originated. LINK-TLM, IRENE, CellTracker
 #' @param launch_timezone Timezone of launch. Run OlsonNames for a list of timezones. Defaults to system timezone.
-#' @keywords
+#' @return Returns data frame of parsed payload data, standardized to POSIXct timestamps and SI units.
 #' @export
+#' @importFrom measurements conv_unit
 #' @examples
-#' library(balloonDataAnaylsis)
 #' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
 
 parsePayloadData <-
     function(data_file,
-             data_source,
+             payload = c("LINK-TLM", "IRENE", "CellTracker"),
              launch_timezone = Sys.timezone())
     {
-        requireNamespace("measurements")
-
-        if (data_source == "LINK-TLM")
+        if (payload == "LINK-TLM")
         {
             # read from CSV format
             parsed_data <- read.csv(data_file)
@@ -57,8 +55,10 @@ parsePayloadData <-
                     tz = Sys.timezone()
                 ), tz = Sys.timezone())
         }
-        else if (data_source == "IRENE")
+        else if (payload == "IRENE")
         {
+            internal_timezone = "Zulu"
+
             # read from CSV format
             parsed_data <- read.csv(data_file)
             colnames(parsed_data) <-
@@ -80,9 +80,43 @@ parsePayloadData <-
             parsed_data$Date <- NULL
             parsed_data$Time <- NULL
         }
+        else if (payload == "CellTracker")
+        {
+            internal_timezone <- "GMT"
+
+            parsed_data <-
+                read.csv(
+                    data_file,
+                    col.names = c(
+                        "Timestamp",
+                        "Latitude",
+                        "Longtitude",
+                        "Altitude_m",
+                        "Signal_Strength"
+                    )
+                )
+
+            # convert to POSIXct timestamps
+            parsed_data$Timestamp <-
+                as.POSIXct(format(as.POSIXct(
+                    paste("2016-09-17", parsed_data$Timestamp),
+                    "%Y-%m-%d %T" ,
+                    tz = internal_timezone
+                ),
+                tz = Sys.timezone()), tz = Sys.timezone())
+
+            # remove rows with NA timestamps
+            parsed_data <-
+                parsed_data[complete.cases(parsed_data), ]
+
+            # remove rows with 0 data which infers no signal
+            parsed_data <-
+                parsed_data[apply(parsed_data[c(2:5)], 1, function(z)
+                    ! any(z == 0)), ]
+        }
         else
         {
-            stop("Data source not recognized.")
+            stop("Parsing for that payload is not written yet.")
         }
         return(parsed_data)
     }
