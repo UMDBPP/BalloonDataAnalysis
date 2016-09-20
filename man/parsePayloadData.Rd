@@ -2,22 +2,25 @@
 % Please edit documentation in R/parsePayloadData.R
 \name{parsePayloadData}
 \alias{parsePayloadData}
-\title{parsePayloadData}
+\title{Parse UMDBPP payload data from file}
 \usage{
-parsePayloadData(data_file, data_source, launch_timezone = Sys.timezone())
+parsePayloadData(data_file, payload = c("LINK-TLM", "IRENE", "CellTracker"),
+  launch_timezone = Sys.timezone())
 }
 \arguments{
 \item{data_file}{Data file in CSV format.}
 
-\item{data_source}{Source of data, can be LINK-TLM or IRENE}
+\item{payload}{Payload from which data originated. LINK-TLM, IRENE, CellTracker}
 
 \item{launch_timezone}{Timezone of launch. Run OlsonNames for a list of timezones. Defaults to system timezone.}
 }
+\value{
+Returns data frame of parsed payload data, standardized to POSIXct timestamps and SI units.
+}
 \description{
-Parses and cleans data from IRENE given input data file.
+Parses and cleans data from given data file, assuming format of given payload.
 }
 \examples{
-library(balloonDataAnaylsis)
 tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
 }

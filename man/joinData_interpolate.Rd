@@ -2,7 +2,7 @@
 % Please edit documentation in R/joinData_interpolate.R
 \name{joinData_interpolate}
 \alias{joinData_interpolate}
-\title{joinData_interpolate}
+\title{Join datasets and interpolate missing fields}
 \usage{
 joinData_interpolate(data_1, data_2, key, interpolate = FALSE)
 }
@@ -13,16 +13,20 @@ joinData_interpolate(data_1, data_2, key, interpolate = FALSE)
 
 \item{key}{Key with which to join datasets.}
 
-\item{interpolate}{Whether to interpolate data for missing fields. Defaults to FALSE.}
+\item{interpolate}{Wether to interpolate data. Defaults to FALSE.}
 }
 \description{
 Merges datasets, specifically from IRENE and LINK-TLM
 }
 \examples{
-library(balloonDataAnaylsis)
-tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-irene_data <- balloonParseData("NS57LaunchData.txt", "IRENE")
+tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
+irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
 joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp")
-joined_data_interpolated <- joinData_interpolate(tlm_data, irene_data, "Timestamp", interpolate = TRUE)
+joined_data_interpolated <-
+     joinData_interpolate(tlm_data,
+                         irene_data,
+                         "Timestamp",
+                         interpolate = TRUE
+     )
 }
 

@@ -1,4 +1,4 @@
-#' plotMultiSeries_lengths
+#' Plot multiple series with the same unit but possibly different dataset sizes on the same axis
 #'
 #' Plots two series with the same unit (with possibly dissimilar dataset sizes) on the same graph using linear approximation
 #' Works best with outer joined data; balloonMergeDatasets(y1, y2)
@@ -13,12 +13,11 @@
 #' @param y1_color Defaults to "red".
 #' @param y2_name Defaults to "y2".
 #' @param y2_color Defaults to "blue".
-#' @keywords
+#' @param title Defaults to "y1_name and y2_name vs x_axis_units"
 #' @export
 #' @examples
-#' library(balloonDataAnaylsis)
-#' tlm_data <- balloonParseData("NS57_parsedPackets.txt", "LINK-TLM")
-#' plotMultiSeries_lengths(
+#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
+#' plotMultiSeries_sameUnit(
 #'     tlm_data$Timestamp,
 #'     tlm_data$Ascent_Rate_m_s,
 #'     tlm_data$Ground_Speed_m_s,
@@ -28,7 +27,7 @@
 #'     y2_name = "Ground Speed"
 #' )
 
-plotMultiSeries_lengths <-
+plotMultiSeries_sameUnit <-
     function(x,
              y1,
              y2,
