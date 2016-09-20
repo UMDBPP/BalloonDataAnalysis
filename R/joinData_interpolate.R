@@ -34,11 +34,16 @@ joinData_interpolate <-
         # interpolate using zoo package
         if (interpolate)
         {
+            key_is_POSIXct <- (class(joined_data[[key]])[1] == "POSIXct")
             for (colname in colnames(joined_data))
             {
                 joined_data[[colname]] <-
                     zoo::na.fill(zoo::na.approx(joined_data[[colname]], joined_data[[key]], na.rm = FALSE),
                                  "extend")
+            }
+            if (key_is_POSIXct)
+            {
+                joined_data[[key]] <- as.POSIXct(joined_data[[key]], origin = "1970-01-01")
             }
         }
 
