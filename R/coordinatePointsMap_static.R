@@ -1,9 +1,8 @@
 #' Plot coordinate pairs onto static map using ggplot2
 #'
-#' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
-#' @param latitude List of latitudes. Required.
-#' @param longitude List of longitudes. Required.
-#' @param api_key Google Maps API Key. Required.
+#' Plots given longitudess and latitudess onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
+#' @param latitudes List of latitudes. Required.
+#' @param longitudes List of longitudes. Required.
 #' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".
 #' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
 #' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
@@ -17,17 +16,15 @@
 #' @examples
 #' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 #' coordinatePointsMap_static(
-#'     tlm_data$Latitude,
-#'     tlm_data$Longitude,
-#'     api_key = "YOUR_API_KEY",
+#'     tlm_data$latitudes,
+#'     tlm_data$longitudes,
 #'     point_color = tlm_data$Altitude_m,
 #'     title = "Altitude (meters)"
 #' )
 
 coordinatePointsMap_static <-
-    function(latitude,
-             longitude,
-             api_key,
+    function(latitudes,
+             longitudes,
              point_color = "blue",
              point_size = 3,
              title = "Balloon Track",
@@ -40,16 +37,15 @@ coordinatePointsMap_static <-
         # get underlying terrain map using mean coordinates
         map <-
             ggmap::get_map(
-                location = c(lon = mean(longitude),
-                             lat = mean(latitude)),
-                api_key = api_key,
+                location = c(lon = mean(longitudes),
+                             lat = mean(latitudes)),
                 zoom = zoom_level,
                 maptype = "terrain"
             )
 
         # render to plot viewer
         ggmap::ggmap(map) + ggplot2::geom_point(
-            data = as.data.frame(cbind(lon = longitude, lat = latitude)),
+            data = as.data.frame(cbind(lon = longitudes, lat = latitudes)),
             ggplot2::aes(x = lon,
                          y = lat,
                          colour = point_color),

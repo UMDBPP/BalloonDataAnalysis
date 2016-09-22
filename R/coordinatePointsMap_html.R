@@ -1,27 +1,24 @@
 #' Plot coordinate pairs onto Google Maps HTML
 #'
 #' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
-#' @param latitude List of latitudes. Required.
-#' @param longitude List of longitudes. Required.
-#' @param data_frame Entire data frame. Required.
-#' @param plot Whether to open the HTML in a web browser. Defaults to TRUE.
-#' @param output_html_file Write HTML map to this filepath if not null. Defaults to NULL.
+#' @param data_frame Data frame that must at least contain the fields "Latitude" and "Longitude". Required.
+#' @param api_key Google Maps API Key. Required if you want to host the HTML output on a server. Defaults to NULL.
+#' @param output_html_file Name of output file. Defaults to NULL for no file writing.
 #' @export
 #' @importFrom googleVis gvisMap
-#' @importFrom googleVis renderGvis
-#' @importFrom shiny htmlOutput
 #' @examples
 #' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-#' coordinatePointsMap_html(tlm_data$Latitude, tlm_data$Longitude, tlm_data)
+#' coordinatePointsMap_html(tlm_data)
 
 coordinatePointsMap_html <-
-    function(latitude,
-             longitude,
-             data_frame,
+    function(data_frame,
              api_key = NULL,
              plot = TRUE,
              output_html_file = NULL)
     {
+        latitudes <- data_frame[["Latitude"]]
+        longitudes <- data_frame[["Longitude"]]
+
         # generate HTML tip data from data frame
         tip <- ""
         for (row in 1:nrow(data_frame))
@@ -52,21 +49,28 @@ coordinatePointsMap_html <-
         # call google visualzation engine for mapping. Returns HTML code for an interactive map.
         gvis_map <-
             googleVis::gvisMap(
-                data.frame(paste(latitude, longitude, sep = ":"), tip),
+                data.frame(paste(latitudes, longitudes, sep = ":"), tip),
                 options = list(
                     apiKey = api_key,
                     showTip = TRUE,
                     enableScrollWheel = TRUE,
                     mapType = 'terrain',
                     useMapTypeControl = TRUE,
-                    height = "100%"
+                    height = "100%",
+                    width = "100%"
                 )
             )
 
         if (!is.null(output_html_file))
         {
-            # open file with given filepath
+            if (tools::file_ext(output_html_file) != "html")
+            {
+                output_html_file <- paste(output_html_file, "html", sep = ".")
+            }
+
+            # open file
             html_file = file(output_html_file, open = "wt")
+
             # get html string
             html_string <-
                 paste(
@@ -78,16 +82,15 @@ coordinatePointsMap_html <-
                     ),
                     collapse = "\n"
                 )
+
             # write HTML to file
             write(html_string, file = html_file)
             close(html_file)
-            #shiny::htmlOutput(output_html_file)
         }
 
         if (plot)
         {
             # render to plot viewer
-            #googleVis::renderGvis(gvis_map)
             plot(gvis_map)
         }
     }

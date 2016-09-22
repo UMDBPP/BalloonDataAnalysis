@@ -2,7 +2,7 @@
 #'
 #' Parses and cleans data from given data file, assuming format of given payload.
 #' @param data_file Data file in CSV format.
-#' @param payload Payload from which data originated. LINK-TLM, IRENE, CellTracker
+#' @param payload Payload from which data originated. Defaults to "LINK-TLM".
 #' @param launch_timezone Timezone of launch. Run OlsonNames for a list of timezones. Defaults to system timezone.
 #' @return Returns data frame of parsed payload data, standardized to POSIXct timestamps and SI units.
 #' @export
