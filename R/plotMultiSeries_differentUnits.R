@@ -19,22 +19,20 @@
 #' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp", interpolate = TRUE)
-# plotMultiSeries_differentUnits(
-#     joined_data$Timestamp,
-#     joined_data$Counts_Per_Minute,
-#     joined_data$Altitude_m,
-#     domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)),
-#     x_name = "Time",
-#     x_unit = "24hr",
-#     y1_name = "Geiger Counter",
-#     y1_unit = "counts per minute",
-#     y2_name = "Altitude",
-#     y2_unit = "meters",
-#     legend_pos = NULL
-# )
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
+#' plotMultiSeries_differentUnits(
+#'     joined_data$Timestamp,
+#'     joined_data$Counts_Per_Minute,
+#'     joined_data$Altitude_m,
+#'     domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
+#'     x_name = "Time",
+#'     x_unit = "24hr",
+#'     y1_name = "Geiger Counter",
+#'     y1_unit = "counts per minute",
+#'     y2_name = "Altitude",
+#'     y2_unit = "meters",
+#'     legend_pos = NULL
+#' )
 
 plotMultiSeries_differentUnits <-
     function(x,

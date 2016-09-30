@@ -7,7 +7,7 @@
 plotMultiSeries_differentUnits(x, y1, y2, domain = NULL, x_name = "x",
   x_unit = NULL, y1_name = "y1", y1_unit = NULL, y1_color = "red",
   y2_name = "y2", y2_unit = NULL, y2_color = "blue", title = NULL,
-  add_legend = FALSE)
+  legend_pos = "topleft")
 }
 \arguments{
 \item{x}{Shared x data (key).}
@@ -36,7 +36,7 @@ plotMultiSeries_differentUnits(x, y1, y2, domain = NULL, x_name = "x",
 
 \item{title}{Title of plot. Defaults to "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)".}
 
-\item{add_legend}{Defaults to FALSE.}
+\item{legend_pos}{Position of legend, NULL for no legend. Defaults to "topleft".}
 }
 \description{
 Plots two series with different units that share a common key.
@@ -44,21 +44,19 @@ Works best with interpolated data; balloonMergeDatasets(y1, y2, interpolate = TR
 Inspired by http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
 }
 \examples{
-tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
-joined_data <- joinData_interpolate(tlm_data, irene_data, interpolate = TRUE)
+joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
 plotMultiSeries_differentUnits(
     joined_data$Timestamp,
     joined_data$Counts_Per_Minute,
     joined_data$Altitude_m,
-    domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)),
+    domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
     x_name = "Time",
     x_unit = "24hr",
     y1_name = "Geiger Counter",
     y1_unit = "counts per minute",
     y2_name = "Altitude",
     y2_unit = "meters",
-    add_legend = TRUE
+    legend_pos = NULL
 )
 }
 

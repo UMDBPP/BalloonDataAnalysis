@@ -17,11 +17,10 @@
 #' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 #' plotMultiSeries_sameUnit(
-#'     tlm_data$Timestamp,
-#'     tlm_data$Ascent_Rate_m_s,
-#'     tlm_data$Ground_Speed_m_s,
+#'     NS57_LINK_TLM$Timestamp,
+#'     NS57_LINK_TLM$Ascent_Rate_m_s,
+#'     NS57_LINK_TLM$Ground_Speed_m_s,
 #'     x_axis_units = "Time (24hr)",
 #'     y_axis_units = "meters per second",
 #'     y1_name = "Ascent Rate",

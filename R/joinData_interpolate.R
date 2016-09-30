@@ -9,12 +9,10 @@
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.fill
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp")
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp")
 #' joined_data_interpolated <-
-#'      joinData_interpolate(tlm_data,
-#'                          irene_data,
+#'      joinData_interpolate(NS57_LINK_TLM,
+#'                          NS57_IRENE,
 #'                          "Timestamp",
 #'                          interpolate = TRUE
 #'      )

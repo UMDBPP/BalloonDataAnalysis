@@ -19,12 +19,10 @@ joinData_interpolate(data_1, data_2, key, interpolate = FALSE)
 Merges datasets, specifically from IRENE and LINK-TLM
 }
 \examples{
-tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
-joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp")
+joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp")
 joined_data_interpolated <-
-     joinData_interpolate(tlm_data,
-                         irene_data,
+     joinData_interpolate(NS57_LINK_TLM,
+                         NS57_IRENE,
                          "Timestamp",
                          interpolate = TRUE
      )

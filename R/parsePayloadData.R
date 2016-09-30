@@ -8,8 +8,10 @@
 #' @export
 #' @importFrom measurements conv_unit
 #' @examples
+#' \dontrun{
 #' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 #' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
+#' }
 
 parsePayloadData <-
     function(data_file,

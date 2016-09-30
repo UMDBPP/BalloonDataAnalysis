@@ -3,7 +3,7 @@
 #' Plots given longitudess and latitudess onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 #' @param latitudes List of latitudes. Required.
 #' @param longitudes List of longitudes. Required.
-#' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".
+#' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "red".
 #' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
 #' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
 #' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
@@ -14,20 +14,18 @@
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 labs
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 #' coordinatePointsMap_static(
-#'     tlm_data$latitudes,
-#'     tlm_data$longitudes,
-#'     point_color = tlm_data$Altitude_m,
+#'     NS57_LINK_TLM$Latitude,
+#'     NS57_LINK_TLM$Longitude,
+#'     point_color = NS57_LINK_TLM$Altitude_m,
 #'     title = "Altitude (meters)"
 #' )
 
 coordinatePointsMap_static <-
     function(latitudes,
              longitudes,
-             point_color = "blue",
+             point_color = "red",
              point_size = 3,
-             title = "Balloon Track",
              zoom_level = 10)
     {
         # pass variables to the global environment so that ggmap can see them
@@ -46,11 +44,8 @@ coordinatePointsMap_static <-
         # render to plot viewer
         ggmap::ggmap(map) + ggplot2::geom_point(
             data = as.data.frame(cbind(lon = longitudes, lat = latitudes)),
-            ggplot2::aes(x = lon,
-                         y = lat,
-                         colour = point_color),
-            size = point_size
-        ) + ggplot2::labs(x = "Longitude", y = "Latitude", title = title)
+            ggplot2::aes(colour = point_color),
+            size = point_size)
 
         # remove global variables
         rm(point_color, pos =  globalenv())
