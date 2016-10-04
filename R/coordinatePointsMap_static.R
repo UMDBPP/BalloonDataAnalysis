@@ -17,7 +17,6 @@
 #'     NS57_LINK_TLM$Latitude,
 #'     NS57_LINK_TLM$Longitude,
 #'     point_color = NS57_LINK_TLM$Altitude_m,
-#'     title = "Altitude (meters)"
 #' )
 
 coordinatePointsMap_static <-
