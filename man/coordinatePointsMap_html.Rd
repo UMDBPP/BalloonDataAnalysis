@@ -8,7 +8,11 @@ coordinatePointsMap_html(latitudes, longitudes, data_frame, api_key = NULL,
   plot = TRUE, output_html_file = NULL)
 }
 \arguments{
-\item{data_frame}{Data frame that must at least contain the fields "Latitude" and "Longitude". Required.}
+\item{latitudes}{List of latitudes. Required.}
+
+\item{longitudes}{List of longitudes. Required.}
+
+\item{data_frame}{Data frame with additional data. Required.}
 
 \item{api_key}{Google Maps API Key. Required if you want to host the HTML output on a server. Defaults to NULL.}
 

@@ -1,7 +1,9 @@
 #' Plot coordinate pairs onto Google Maps HTML
 #'
 #' Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
-#' @param data_frame Data frame that must at least contain the fields "Latitude" and "Longitude". Required.
+#' @param latitudes List of latitudes. Required.
+#' @param longitudes List of longitudes. Required.
+#' @param data_frame Data frame with additional data. Required.
 #' @param api_key Google Maps API Key. Required if you want to host the HTML output on a server. Defaults to NULL.
 #' @param plot Whether to open map in browser. Defaults to FALSE.
 #' @param output_html_file Name of output file. Defaults to NULL for no file writing.
