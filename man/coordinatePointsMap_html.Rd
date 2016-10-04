@@ -4,8 +4,8 @@
 \alias{coordinatePointsMap_html}
 \title{Plot coordinate pairs onto Google Maps HTML}
 \usage{
-coordinatePointsMap_html(data_frame, api_key = NULL, plot = TRUE,
-  output_html_file = NULL)
+coordinatePointsMap_html(latitudes, longitudes, data_frame, api_key = NULL,
+  plot = TRUE, output_html_file = NULL)
 }
 \arguments{
 \item{data_frame}{Data frame that must at least contain the fields "Latitude" and "Longitude". Required.}

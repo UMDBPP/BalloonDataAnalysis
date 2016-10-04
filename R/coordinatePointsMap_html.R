@@ -11,14 +11,13 @@
 #' coordinatePointsMap_html(NS57_LINK_TLM)
 
 coordinatePointsMap_html <-
-    function(data_frame,
+    function(latitudes,
+             longitudes,
+             data_frame,
              api_key = NULL,
              plot = TRUE,
              output_html_file = NULL)
     {
-        latitudes <- data_frame[["Latitude"]]
-        longitudes <- data_frame[["Longitude"]]
-
         # generate HTML tip data from data frame
         tip <- ""
         for (row in 1:nrow(data_frame))
@@ -76,9 +75,9 @@ coordinatePointsMap_html <-
                 paste(
                     c(
                         gvis_map$html$header,
-                        paste(gvis_map$html$chart, collapse = ""),
-                        gvis_map$html$caption,
-                        gvis_map$html$footer
+                        paste(gvis_map$html$chart, collapse = "")
+                        # gvis_map$html$caption,
+                        # gvis_map$html$footer
                     ),
                     collapse = "\n"
                 )
