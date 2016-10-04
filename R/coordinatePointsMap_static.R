@@ -5,7 +5,6 @@
 #' @param longitudes List of longitudes. Required.
 #' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "red".
 #' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
-#' @param title Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".
 #' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
 #' @export
 #' @importFrom ggmap get_map
