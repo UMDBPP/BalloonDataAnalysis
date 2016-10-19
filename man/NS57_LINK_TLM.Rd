@@ -4,7 +4,7 @@
 \name{NS57_LINK_TLM}
 \alias{NS57_LINK_TLM}
 \title{LINK-TLM Data}
-\format{An object of class \code{data.frame} with 193 rows and 8 columns.}
+\format{An object of class \code{data.frame} with 192 rows and 8 columns.}
 \usage{
 NS57_LINK_TLM
 }

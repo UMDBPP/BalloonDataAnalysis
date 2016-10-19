@@ -20,11 +20,23 @@ parsePayloadData <-
     {
         if (payload == "LINK-TLM")
         {
+            # get string from file
+            file_string <- readChar(data_file, file.info(data_file)$size)
+
+            # remove lines from software restarts
+            file_string <- gsub("LOG BEGINNING ON.*?>\n", "", file_string)
+
+            # remove log strings at ends of lines
+            file_string <- gsub("  <.*?>", "", file_string)
+
             # read from CSV format
-            parsed_data <- read.csv(data_file)
+            parsed_data <- read.csv(textConnection(file_string))
+
+            # reorder columns to put timestamp first and callsign last
+            parsed_data <- parsed_data[c(2, 3, 4, 5, 6, 7, 8, 1)]
+
             colnames(parsed_data) <-
                 c(
-                    "Callsign",
                     "Timestamp",
                     "Latitude",
                     "Longitude",
@@ -32,11 +44,8 @@ parsePayloadData <-
                     "Downrange_Distance_m",
                     "Ascent_Rate_m_s",
                     "Ground_Speed_m_s",
-                    "Log"
+                    "Callsign"
                 )
-
-            # remove "Log" column
-            parsed_data$Log <- NULL
 
             # convert to meters
             parsed_data$Altitude_m <-
@@ -64,10 +73,7 @@ parsePayloadData <-
             # read from CSV format
             parsed_data <- read.csv(data_file)
             colnames(parsed_data) <-
-                c("Date", "Time", "Counts_Per_Minute", "Unit")
-
-            # remove "Unit" column
-            parsed_data$Unit <- NULL
+                c("Date", "Time", "Reading", "Unit")
 
             # get Unix epoch timestamps (IRENE records in Zulu time to separate Date and Time columns, and in American date format)
             parsed_data$Timestamp <-
@@ -81,6 +87,9 @@ parsePayloadData <-
                 ), tz = Sys.timezone())
             parsed_data$Date <- NULL
             parsed_data$Time <- NULL
+
+            # reorder columns to put timestamp first
+            parsed_data <- parsed_data[c(3, 1, 2)]
         }
         else if (payload == "CellTracker")
         {
@@ -111,7 +120,7 @@ parsePayloadData <-
             parsed_data <-
                 parsed_data[complete.cases(parsed_data), ]
 
-            # remove rows with 0 data which infers no signal
+            # remove rows with 0 data which implies no signal
             parsed_data <-
                 parsed_data[apply(parsed_data[c(2:5)], 1, function(z)
                     ! any(z == 0)), ]
