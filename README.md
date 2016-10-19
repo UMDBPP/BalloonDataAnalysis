@@ -24,8 +24,13 @@ Type a question mark before function names to view their documentation and usage
 ### Functions
 
 BalloonDataAnalysis::parsePayloadData
+
 BalloonDataAnalysis::joinData_interpolate
+
 BalloonDataAnalysis::plotmultiSeries_sameUnits
+
 BalloonDataAnalysis::plotMultiSeries_differentUnits
+
 BalloonDataAnalysis::coordinatePointsMap_static
+
 BalloonDataAnalysis::coordinatePointsMap_html
