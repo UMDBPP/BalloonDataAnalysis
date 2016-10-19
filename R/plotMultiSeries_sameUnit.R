@@ -14,17 +14,18 @@
 #' @param y2_name Defaults to "y2".
 #' @param y2_color Defaults to "blue".
 #' @param title Defaults to "y1_name and y2_name vs x_axis_units"
+#' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 #' plotMultiSeries_sameUnit(
-#'     tlm_data$Timestamp,
-#'     tlm_data$Ascent_Rate_m_s,
-#'     tlm_data$Ground_Speed_m_s,
+#'     NS57_LINK_TLM$Timestamp,
+#'     NS57_LINK_TLM$Ascent_Rate_m_s,
+#'     NS57_LINK_TLM$Ground_Speed_m_s,
 #'     x_axis_units = "Time (24hr)",
 #'     y_axis_units = "meters per second",
 #'     y1_name = "Ascent Rate",
-#'     y2_name = "Ground Speed"
+#'     y2_name = "Ground Speed",
+#'     legend_pos = "bottomleft"
 #' )
 
 plotMultiSeries_sameUnit <-
@@ -39,7 +40,8 @@ plotMultiSeries_sameUnit <-
              y1_color = "red",
              y2_name = "y2",
              y2_color = "blue",
-             title = NULL)
+             title = NULL,
+             legend_pos = "topleft")
     {
         if (is.null(domain))
         {
@@ -63,10 +65,13 @@ plotMultiSeries_sameUnit <-
         }
 
         plot(
-            approxfun(x, y1),
+            x,
+            y1,
             xlim = domain,
             ylim = range,
-            type = "l",
+            type = "p",
+            pch = 15,
+            cex = 0.5,
             col = y1_color,
             xlab = x_axis_units,
             ylab = y_axis_units,
@@ -74,31 +79,24 @@ plotMultiSeries_sameUnit <-
         )
 
         points(x,
-               y1,
-               col = y1_color,
-               pch = 15,
-               cex = 0.5)
-
-        f <- approxfun(x, y2)
-
-        curve(f(x),
-              xlim = domain,
-              col = y2_color,
-              add = TRUE)
-
-        points(x,
                y2,
                col = y2_color,
                pch = 16,
                cex = 0.5)
 
-        legend(
-            "topleft",
-            legend = c(y1_name, y2_name),
-            text.col = c(y1_color, y2_color),
-            pch = c(15, 16),
-            col = c(y1_color, y2_color)
-        )
+        lines(x, y1, col = y1_color)
+        lines(x, y2, col = y2_color)
+
+        if (!is.null(legend_pos))
+        {
+            legend(
+                legend_pos,
+                legend = c(y1_name, y2_name),
+                text.col = c(y1_color, y2_color),
+                pch = c(15, 16),
+                col = c(y1_color, y2_color)
+            )
+        }
 
         grid()
     }

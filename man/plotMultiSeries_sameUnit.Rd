@@ -6,7 +6,8 @@
 \usage{
 plotMultiSeries_sameUnit(x, y1, y2, domain = NULL, range = NULL,
   x_axis_units = "x", y_axis_units = "y", y1_name = "y1",
-  y1_color = "red", y2_name = "y2", y2_color = "blue", title = NULL)
+  y1_color = "red", y2_name = "y2", y2_color = "blue", title = NULL,
+  legend_pos = "topleft")
 }
 \arguments{
 \item{x}{Shared x data (key).}
@@ -32,21 +33,23 @@ plotMultiSeries_sameUnit(x, y1, y2, domain = NULL, range = NULL,
 \item{y2_color}{Defaults to "blue".}
 
 \item{title}{Defaults to "y1_name and y2_name vs x_axis_units"}
+
+\item{legend_pos}{Position of legend, NULL for no legend. Defaults to "topleft".}
 }
 \description{
 Plots two series with the same unit (with possibly dissimilar dataset sizes) on the same graph using linear approximation
 Works best with outer joined data; balloonMergeDatasets(y1, y2)
 }
 \examples{
-tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 plotMultiSeries_sameUnit(
-    tlm_data$Timestamp,
-    tlm_data$Ascent_Rate_m_s,
-    tlm_data$Ground_Speed_m_s,
+    NS57_LINK_TLM$Timestamp,
+    NS57_LINK_TLM$Ascent_Rate_m_s,
+    NS57_LINK_TLM$Ground_Speed_m_s,
     x_axis_units = "Time (24hr)",
     y_axis_units = "meters per second",
     y1_name = "Ascent Rate",
-    y2_name = "Ground Speed"
+    y2_name = "Ground Speed",
+    legend_pos = "bottomleft"
 )
 }
 

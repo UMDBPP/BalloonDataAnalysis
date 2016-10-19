@@ -4,25 +4,26 @@
 \alias{coordinatePointsMap_html}
 \title{Plot coordinate pairs onto Google Maps HTML}
 \usage{
-coordinatePointsMap_html(latitude, longitude, data_frame, api_key = NULL,
+coordinatePointsMap_html(latitudes, longitudes, data_frame, api_key = NULL,
   plot = TRUE, output_html_file = NULL)
 }
 \arguments{
-\item{latitude}{List of latitudes. Required.}
+\item{latitudes}{List of latitudes. Required.}
 
-\item{longitude}{List of longitudes. Required.}
+\item{longitudes}{List of longitudes. Required.}
 
-\item{data_frame}{Entire data frame. Required.}
+\item{data_frame}{Data frame with additional data. Required.}
 
-\item{plot}{Whether to open the HTML in a web browser. Defaults to TRUE.}
+\item{api_key}{Google Maps API Key. Required if you want to host the HTML output on a server. Defaults to NULL.}
 
-\item{output_html_file}{Write HTML map to this filepath if not null. Defaults to NULL.}
+\item{plot}{Whether to open map in browser. Defaults to FALSE.}
+
+\item{output_html_file}{Name of output file. Defaults to NULL for no file writing.}
 }
 \description{
 Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 }
 \examples{
-tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-coordinatePointsMap_html(tlm_data$Latitude, tlm_data$Longitude, tlm_data)
+coordinatePointsMap_html(NS57_LINK_TLM)
 }
 

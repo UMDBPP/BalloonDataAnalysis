@@ -9,12 +9,10 @@
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.fill
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- joinData_interpolate(tlm_data, irene_data, "Timestamp")
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp")
 #' joined_data_interpolated <-
-#'      joinData_interpolate(tlm_data,
-#'                          irene_data,
+#'      joinData_interpolate(NS57_LINK_TLM,
+#'                          NS57_IRENE,
 #'                          "Timestamp",
 #'                          interpolate = TRUE
 #'      )
@@ -34,11 +32,16 @@ joinData_interpolate <-
         # interpolate using zoo package
         if (interpolate)
         {
+            key_is_POSIXct <- (class(joined_data[[key]])[1] == "POSIXct")
             for (colname in colnames(joined_data))
             {
                 joined_data[[colname]] <-
                     zoo::na.fill(zoo::na.approx(joined_data[[colname]], joined_data[[key]], na.rm = FALSE),
                                  "extend")
+            }
+            if (key_is_POSIXct)
+            {
+                joined_data[[key]] <- as.POSIXct(joined_data[[key]], origin = "1970-01-01")
             }
         }
 

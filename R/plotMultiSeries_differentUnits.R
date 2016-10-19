@@ -16,24 +16,22 @@
 #' @param y2_unit Defaults to NULL.
 #' @param y2_color Defaults to "blue".
 #' @param title Title of plot. Defaults to "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)".
-#' @param add_legend Defaults to FALSE.
+#' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
 #' @examples
-#' tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
-#' irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
-#' joined_data <- joinData_interpolate(tlm_data, irene_data, interpolate = TRUE)
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
 #' plotMultiSeries_differentUnits(
 #'     joined_data$Timestamp,
 #'     joined_data$Counts_Per_Minute,
 #'     joined_data$Altitude_m,
-#'     domain = c(min(tlm_data$Timestamp), max(tlm_data$Timestamp)),
+#'     domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
 #'     x_name = "Time",
 #'     x_unit = "24hr",
 #'     y1_name = "Geiger Counter",
 #'     y1_unit = "counts per minute",
 #'     y2_name = "Altitude",
 #'     y2_unit = "meters",
-#'     add_legend = TRUE
+#'     legend_pos = NULL
 #' )
 
 plotMultiSeries_differentUnits <-
@@ -50,7 +48,7 @@ plotMultiSeries_differentUnits <-
              y2_unit = NULL,
              y2_color = "blue",
              title = NULL,
-             add_legend = FALSE)
+             legend_pos = "topleft")
     {
         # if domain was not given, use domain of x
         if (is.null(domain))
@@ -122,16 +120,14 @@ plotMultiSeries_differentUnits <-
             axes = FALSE,
             xlab = "",
             ylab = "",
-            type = "l",
+            type = "p",
+            pch = 16,
+            cex = 0.5,
             col = y1_color,
             main = title
         )
 
-        points(x,
-               y1,
-               pch = 16,
-               cex = 0.5,
-               col = y1_color)
+        lines(x, y1, col = y1_color)
 
         axis(2, col.axis = y1_color, las = 1)
         mtext(y1_unit,
@@ -148,15 +144,13 @@ plotMultiSeries_differentUnits <-
             xlab = "",
             ylab = "",
             axes = FALSE,
-            type = "l",
+            type = "p",
+            pch = 15,
+            cex = 0.5,
             col = y2_color
         )
 
-        points(x,
-               y2,
-               pch = 15,
-               cex = 0.5,
-               col = y2_color)
+        lines(x, y2, col = y2_color)
 
         axis(4, col.axis = y2_color, las = 1)
         mtext(y2_unit,
@@ -180,10 +174,10 @@ plotMultiSeries_differentUnits <-
         )
 
         # draw legend if needed
-        if (add_legend)
+        if (!is.null(legend_pos))
         {
             legend(
-                "topleft",
+                legend_pos,
                 legend = c(y1_name, y2_name),
                 text.col = c(y1_color, y2_color),
                 pch = c(16, 15),

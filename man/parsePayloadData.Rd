@@ -10,7 +10,7 @@ parsePayloadData(data_file, payload = c("LINK-TLM", "IRENE", "CellTracker"),
 \arguments{
 \item{data_file}{Data file in CSV format.}
 
-\item{payload}{Payload from which data originated. LINK-TLM, IRENE, CellTracker}
+\item{payload}{Payload from which data originated. Defaults to "LINK-TLM".}
 
 \item{launch_timezone}{Timezone of launch. Run OlsonNames for a list of timezones. Defaults to system timezone.}
 }
@@ -21,7 +21,9 @@ Returns data frame of parsed payload data, standardized to POSIXct timestamps an
 Parses and cleans data from given data file, assuming format of given payload.
 }
 \examples{
+\dontrun{
 tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
+}
 }
 

@@ -4,35 +4,28 @@
 \alias{coordinatePointsMap_static}
 \title{Plot coordinate pairs onto static map using ggplot2}
 \usage{
-coordinatePointsMap_static(latitude, longitude, api_key, point_color = "blue",
-  point_size = 3, title = "Balloon Track", zoom_level = 10)
+coordinatePointsMap_static(latitudes, longitudes, point_color = "red",
+  point_size = 3, zoom_level = 10)
 }
 \arguments{
-\item{latitude}{List of latitudes. Required.}
+\item{latitudes}{List of latitudes. Required.}
 
-\item{longitude}{List of longitudes. Required.}
+\item{longitudes}{List of longitudes. Required.}
 
-\item{api_key}{Google Maps API Key. Required.}
-
-\item{point_color}{Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "blue".}
+\item{point_color}{Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "red".}
 
 \item{point_size}{Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.}
-
-\item{title}{Map title. Set to element_blank() for none. Defaults to "Altitude (meters)".}
 
 \item{zoom_level}{Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.}
 }
 \description{
-Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
+Plots given longitudess and latitudess onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
 }
 \examples{
-tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 coordinatePointsMap_static(
-    tlm_data$Latitude,
-    tlm_data$Longitude,
-    api_key = "YOUR_API_KEY",
-    point_color = tlm_data$Altitude_m,
-    title = "Altitude (meters)"
+    NS57_LINK_TLM$Latitude,
+    NS57_LINK_TLM$Longitude,
+    point_color = NS57_LINK_TLM$Altitude_m,
 )
 }
 
