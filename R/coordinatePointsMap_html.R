@@ -74,15 +74,13 @@ coordinatePointsMap_html <-
 
             # get html string
             html_string <-
-                paste(
-                    c(
-                        gvis_map$html$header,
-                        paste(gvis_map$html$chart, collapse = "")
-                        # gvis_map$html$caption,
-                        # gvis_map$html$footer
-                    ),
-                    collapse = "\n"
-                )
+                paste(c(
+                    gvis_map$html$header,
+                    paste(gvis_map$html$chart, collapse = ""),
+                    gvis_map$html$caption,
+                    gvis_map$html$footer
+                ),
+                collapse = "\n")
 
             # write HTML to file
             write(html_string, file = html_file)

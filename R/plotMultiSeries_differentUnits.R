@@ -22,7 +22,7 @@
 #' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
 #' plotMultiSeries_differentUnits(
 #'     joined_data$Timestamp,
-#'     joined_data$Counts_Per_Minute,
+#'     joined_data$Reading,
 #'     joined_data$Altitude_m,
 #'     domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
 #'     x_name = "Time",

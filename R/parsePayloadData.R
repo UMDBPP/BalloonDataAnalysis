@@ -21,10 +21,12 @@ parsePayloadData <-
         if (payload == "LINK-TLM")
         {
             # get string from file
-            file_string <- readChar(data_file, file.info(data_file)$size)
+            file_string <-
+                readChar(data_file, file.info(data_file)$size)
 
             # remove lines from software restarts
-            file_string <- gsub("LOG BEGINNING ON.*?>\n", "", file_string)
+            file_string <-
+                gsub("LOG BEGINNING ON.*?>\n", "", file_string)
 
             # remove log strings at ends of lines
             file_string <- gsub("  <.*?>", "", file_string)
@@ -109,21 +111,23 @@ parsePayloadData <-
 
             # convert to POSIXct timestamps
             parsed_data$Timestamp <-
-                as.POSIXct(format(as.POSIXct(
-                    paste("2016-09-17", parsed_data$Timestamp),
-                    "%Y-%m-%d %T" ,
-                    tz = internal_timezone
-                ),
-                tz = Sys.timezone()), tz = Sys.timezone())
+                as.POSIXct(format(
+                    as.POSIXct(
+                        paste("2016-09-17", parsed_data$Timestamp),
+                        "%Y-%m-%d %T" ,
+                        tz = internal_timezone
+                    ),
+                    tz = Sys.timezone()
+                ), tz = Sys.timezone())
 
             # remove rows with NA timestamps
             parsed_data <-
-                parsed_data[complete.cases(parsed_data), ]
+                parsed_data[complete.cases(parsed_data),]
 
             # remove rows with 0 data which implies no signal
             parsed_data <-
                 parsed_data[apply(parsed_data[c(2:5)], 1, function(z)
-                    ! any(z == 0)), ]
+                    ! any(z == 0)),]
         }
         else
         {

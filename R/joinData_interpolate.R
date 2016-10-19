@@ -41,7 +41,8 @@ joinData_interpolate <-
             }
             if (key_is_POSIXct)
             {
-                joined_data[[key]] <- as.POSIXct(joined_data[[key]], origin = "1970-01-01")
+                joined_data[[key]] <-
+                    as.POSIXct(joined_data[[key]], origin = "1970-01-01")
             }
         }
 

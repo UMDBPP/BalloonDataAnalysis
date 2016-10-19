@@ -27,7 +27,7 @@ BalloonDataAnalysis::parsePayloadData
 
 BalloonDataAnalysis::joinData_interpolate
 
-BalloonDataAnalysis::plotmultiSeries_sameUnits
+BalloonDataAnalysis::plotMultiSeries_sameUnits
 
 BalloonDataAnalysis::plotMultiSeries_differentUnits
 

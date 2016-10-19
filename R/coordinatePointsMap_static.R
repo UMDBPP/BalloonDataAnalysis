@@ -40,10 +40,9 @@ coordinatePointsMap_static <-
             )
 
         # render to plot viewer
-        ggmap::ggmap(map) + ggplot2::geom_point(
-            data = as.data.frame(cbind(lon = longitudes, lat = latitudes)),
-            ggplot2::aes(colour = point_color),
-            size = point_size)
+        ggmap::ggmap(map) + ggplot2::geom_point(data = as.data.frame(cbind(lon = longitudes, lat = latitudes)),
+                                                ggplot2::aes(colour = point_color),
+                                                size = point_size)
 
         # remove global variables
         rm(point_color, pos =  globalenv())
