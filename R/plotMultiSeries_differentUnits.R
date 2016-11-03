@@ -12,9 +12,11 @@
 #' @param y1_name Defaults to "y1".
 #' @param y1_unit Defaults to NULL.
 #' @param y1_color Defaults to "red".
+#' @param y1_draw_line Defaults to FALSE.
 #' @param y2_name Defaults to "y2".
 #' @param y2_unit Defaults to NULL.
 #' @param y2_color Defaults to "blue".
+#' @param y2_draw_line Defaults to FALSE.
 #' @param title Title of plot. Defaults to "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)".
 #' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
@@ -31,6 +33,7 @@
 #'     y1_unit = "counts per minute",
 #'     y2_name = "Altitude",
 #'     y2_unit = "meters",
+#'     y2_draw_line = TRUE,
 #'     legend_pos = NULL
 #' )
 
@@ -44,9 +47,11 @@ plotMultiSeries_differentUnits <-
              y1_name = "y1",
              y1_unit = NULL,
              y1_color = "red",
+             y1_draw_line = FALSE,
              y2_name = "y2",
              y2_unit = NULL,
              y2_color = "blue",
+             y2_draw_line = FALSE,
              title = NULL,
              legend_pos = "topleft")
     {
@@ -79,10 +84,10 @@ plotMultiSeries_differentUnits <-
         }
 
         # calculate plot margins
-        bottom_mar = 3
-        left_mar = 2
-        top_mar = 4
-        right_mar = 2
+        bottom_mar = 2.75
+        left_mar = 2.75
+        top_mar = 2.75
+        right_mar = 2.75
 
         temp = max(y1)
         while (temp >= 1)
@@ -127,10 +132,20 @@ plotMultiSeries_differentUnits <-
             main = title
         )
 
-        lines(x, y1, col = y1_color)
+        if (y1_draw_line)
+        {
+            lines(x, y1, col = y1_color)
+        }
 
         axis(2, col.axis = y1_color, las = 1)
-        mtext(y1_unit,
+
+        # write left axis label
+        y1_lab = y1_name
+        if (!is.null(y1_unit))
+        {
+            y1_lab = paste(y1_lab, " (", y1_unit, ")", sep = "")
+        }
+        mtext(y1_lab,
               side = 2,
               col = y1_color,
               line = left_mar - 1)
@@ -150,13 +165,27 @@ plotMultiSeries_differentUnits <-
             col = y2_color
         )
 
-        lines(x, y2, col = y2_color)
+        if (y2_draw_line)
+        {
+            lines(x, y2, col = y2_color)
+        }
 
         axis(4, col.axis = y2_color, las = 1)
-        mtext(y2_unit,
-              side = 4,
-              col = y2_color,
-              line = right_mar - 1)
+
+        # write right axis label
+        y2_lab = y2_name
+        if (!is.null(y2_unit))
+        {
+            y2_lab = paste(y2_lab, " (", y2_unit, ")", sep = "")
+        }
+
+        p <- par('usr')
+        text(p[2] + right_mar*350, mean(p[3:4]), labels = y2_lab, col = y2_color, xpd = NA, srt = -90)
+
+        #mtext(y2_lab,
+        #      side = 4,
+        #      col = y2_color,
+        #      line = right_mar - 1)
 
         if (class(x)[1] == "POSIXct")
         {
@@ -166,12 +195,17 @@ plotMultiSeries_differentUnits <-
         {
             axis(1, pretty(range(x), 10))
         }
-        mtext(
-            paste(x_name, " (", x_unit, ")", sep = ""),
-            side = 1,
-            col = "black",
-            line = bottom_mar - 1
-        )
+
+        # write bottom axis label
+        x_lab = x_name
+        if (!is.null(x_unit))
+        {
+            x_lab = paste(x_lab, " (", x_unit, ")", sep = "")
+        }
+        mtext(x_lab,
+              side = 1,
+              col = "black",
+              line = bottom_mar - 1)
 
         # draw legend if needed
         if (!is.null(legend_pos))

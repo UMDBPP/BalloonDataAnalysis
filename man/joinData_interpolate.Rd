@@ -4,7 +4,7 @@
 \alias{joinData_interpolate}
 \title{Join datasets and interpolate missing fields}
 \usage{
-joinData_interpolate(data_1, data_2, key, interpolate = FALSE)
+joinData_interpolate(data_1, data_2, key = "Timestamp", interpolate = TRUE)
 }
 \arguments{
 \item{data_1}{First dataset.}
@@ -13,18 +13,14 @@ joinData_interpolate(data_1, data_2, key, interpolate = FALSE)
 
 \item{key}{Key with which to join datasets.}
 
-\item{interpolate}{Wether to interpolate data. Defaults to FALSE.}
+\item{interpolate}{Wether to interpolate data. Defaults to TRUE.}
 }
 \description{
 Merges datasets, specifically from IRENE and LINK-TLM
 }
 \examples{
-joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp")
-joined_data_interpolated <-
-     joinData_interpolate(NS57_LINK_TLM,
-                         NS57_IRENE,
-                         "Timestamp",
-                         interpolate = TRUE
-     )
+joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, interpolate = FALSE)
+joined_data_interpolated <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE)
+
 }
 

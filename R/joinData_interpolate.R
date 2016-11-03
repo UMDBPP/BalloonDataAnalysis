@@ -4,21 +4,17 @@
 #' @param data_1 First dataset.
 #' @param data_2 Second dataset.
 #' @param key Key with which to join datasets.
-#' @param interpolate Wether to interpolate data. Defaults to FALSE.
+#' @param interpolate Wether to interpolate data. Defaults to TRUE.
 #' @export
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.fill
 #' @examples
-#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp")
-#' joined_data_interpolated <-
-#'      joinData_interpolate(NS57_LINK_TLM,
-#'                          NS57_IRENE,
-#'                          "Timestamp",
-#'                          interpolate = TRUE
-#'      )
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, interpolate = FALSE)
+#' joined_data_interpolated <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE)
+#'
 
 joinData_interpolate <-
-    function(data_1, data_2, key, interpolate = FALSE)
+    function(data_1, data_2, key = "Timestamp", interpolate = TRUE)
     {
         # outer join tables by key
         joined_data <-

@@ -6,7 +6,8 @@
 \usage{
 plotMultiSeries_differentUnits(x, y1, y2, domain = NULL, x_name = "x",
   x_unit = NULL, y1_name = "y1", y1_unit = NULL, y1_color = "red",
-  y2_name = "y2", y2_unit = NULL, y2_color = "blue", title = NULL,
+  y1_draw_line = FALSE, y2_name = "y2", y2_unit = NULL,
+  y2_color = "blue", y2_draw_line = FALSE, title = NULL,
   legend_pos = "topleft")
 }
 \arguments{
@@ -28,11 +29,15 @@ plotMultiSeries_differentUnits(x, y1, y2, domain = NULL, x_name = "x",
 
 \item{y1_color}{Defaults to "red".}
 
+\item{y1_draw_line}{Defaults to FALSE.}
+
 \item{y2_name}{Defaults to "y2".}
 
 \item{y2_unit}{Defaults to NULL.}
 
 \item{y2_color}{Defaults to "blue".}
+
+\item{y2_draw_line}{Defaults to FALSE.}
 
 \item{title}{Title of plot. Defaults to "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)".}
 
@@ -47,7 +52,7 @@ Inspired by http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-dif
 joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
 plotMultiSeries_differentUnits(
     joined_data$Timestamp,
-    joined_data$Counts_Per_Minute,
+    joined_data$Reading,
     joined_data$Altitude_m,
     domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
     x_name = "Time",
@@ -56,6 +61,7 @@ plotMultiSeries_differentUnits(
     y1_unit = "counts per minute",
     y2_name = "Altitude",
     y2_unit = "meters",
+    y2_draw_line = TRUE,
     legend_pos = NULL
 )
 }
