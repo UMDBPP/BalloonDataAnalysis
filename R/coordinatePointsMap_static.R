@@ -5,7 +5,6 @@
 #' @param longitudes List of longitudes. Required.
 #' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "red".
 #' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
-#' @param zoom_level Zoom level of map. 3 is world, 10 is city, 21 is street. May have to fine tune this variable to get good map. Defaults to 10.
 #' @export
 #' @importFrom ggmap get_map
 #' @importFrom ggmap ggmap
@@ -23,28 +22,41 @@ coordinatePointsMap_static <-
     function(latitudes,
              longitudes,
              point_color = "red",
-             point_size = 3,
-             zoom_level = 10)
+             point_size = 3)
     {
-        # pass variables to the global environment so that ggmap can see them
-        point_color <<- point_color
-        point_size <<- point_size
+        require(ggplot2)
+        require(ggmap)
 
-        # get underlying terrain map using mean coordinates
+        # pass variables to the global environment so that ggmap can see them
+        #point_color_global <<- point_color
+        #point_size_global <<- point_size
+
+        # get map boundaries (min lon, min lat, max lon, max lat)
+        boundaries <-
+            c(min(longitudes),
+              min(latitudes),
+              max(longitudes),
+              max(latitudes))
+
+        # get underlying terrain map
         map <-
-            ggmap::get_map(
-                location = c(lon = mean(longitudes),
-                             lat = mean(latitudes)),
-                zoom = zoom_level,
-                maptype = "terrain"
-            )
+            get_map(location = boundaries,
+                    maptype = "terrain",
+                    zoom = 10)
+
+        points <-
+            data.frame(latitude = latitudes, longitude = longitudes)
 
         # render to plot viewer
-        ggmap::ggmap(map) + ggplot2::geom_point(data = as.data.frame(cbind(lon = longitudes, lat = latitudes)),
-                                                ggplot2::aes(colour = point_color),
-                                                size = point_size)
+        ggmap(map, base_layer = ggplot(
+            points,
+            aes(
+                x = longitudes,
+                y = latitudes
+            )
+        )) + geom_path()
 
         # remove global variables
-        rm(point_color, pos =  globalenv())
-        rm(point_size, pos = globalenv())
+        #rm(point_color_global, pos =  globalenv())
+        #rm(point_size_global, pos =  globalenv())
     }

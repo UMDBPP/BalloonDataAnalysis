@@ -5,12 +5,14 @@
 \title{Parse UMDBPP payload data from file}
 \usage{
 parsePayloadData(data_file, payload = c("LINK-TLM", "IRENE", "CellTracker"),
-  launch_timezone = Sys.timezone())
+  launch_date = NULL, launch_timezone = Sys.timezone())
 }
 \arguments{
 \item{data_file}{Data file in CSV format.}
 
 \item{payload}{Payload from which data originated. Defaults to "LINK-TLM".}
+
+\item{launch_date}{Date of launch in YYYY-MM-DD format. Defaults to NULL.}
 
 \item{launch_timezone}{Timezone of launch. Run OlsonNames for a list of timezones. Defaults to system timezone.}
 }

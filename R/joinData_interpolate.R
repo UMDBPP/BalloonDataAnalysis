@@ -3,7 +3,7 @@
 #' Merges datasets, specifically from IRENE and LINK-TLM
 #' @param data_1 First dataset.
 #' @param data_2 Second dataset.
-#' @param key Key with which to join datasets.
+#' @param by Key with which to join datasets.
 #' @param interpolate Wether to interpolate data. Defaults to TRUE.
 #' @export
 #' @importFrom zoo na.approx
@@ -14,31 +14,38 @@
 #'
 
 joinData_interpolate <-
-    function(data_1, data_2, key = "Timestamp", interpolate = TRUE)
+    function(data_1,
+             data_2,
+             by,
+             interpolate = TRUE)
     {
         # outer join tables by key
         joined_data <-
             merge(
                 x = data_1,
                 y = data_2,
-                by = c(key),
+                by = c(by),
                 all = TRUE
             )
 
         # interpolate using zoo package
         if (interpolate)
         {
-            key_is_POSIXct <- (class(joined_data[[key]])[1] == "POSIXct")
-            for (colname in colnames(joined_data))
+            data_types <- lapply(joined_data, class)
+
+            for (key in by)
             {
-                joined_data[[colname]] <-
-                    zoo::na.fill(zoo::na.approx(joined_data[[colname]], joined_data[[key]], na.rm = FALSE),
-                                 "extend")
-            }
-            if (key_is_POSIXct)
-            {
-                joined_data[[key]] <-
-                    as.POSIXct(joined_data[[key]], origin = "1970-01-01")
+                for (column in colnames(joined_data))
+                {
+                    if ("numeric" %in% data_types[[column]])
+                    {
+                        joined_data[[column]] <-
+                            zoo::na.fill(
+                                zoo::na.approx(joined_data[[column]], joined_data[[key]], na.rm = FALSE),
+                                "extend"
+                            )
+                    }
+                }
             }
         }
 

@@ -49,12 +49,12 @@ Works best with interpolated data; balloonMergeDatasets(y1, y2, interpolate = TR
 Inspired by http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
 }
 \examples{
-joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
+joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "DateTIme", interpolate = TRUE)
 plotMultiSeries_differentUnits(
-    joined_data$Timestamp,
+    joined_data$DateTIme,
     joined_data$Reading,
     joined_data$Altitude_m,
-    domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
+    domain = c(min(NS57_LINK_TLM$DateTIme), max(NS57_LINK_TLM$DateTIme)),
     x_name = "Time",
     x_unit = "24hr",
     y1_name = "Geiger Counter",

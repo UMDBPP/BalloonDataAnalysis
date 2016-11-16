@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' plotMultiSeries_sameUnit(
-#'     NS57_LINK_TLM$Timestamp,
+#'     NS57_LINK_TLM$DateTime,
 #'     NS57_LINK_TLM$Ascent_Rate_m_s,
 #'     NS57_LINK_TLM$Ground_Speed_m_s,
 #'     x_axis_units = "Time (24hr)",

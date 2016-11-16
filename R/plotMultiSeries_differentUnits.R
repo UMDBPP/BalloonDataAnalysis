@@ -21,12 +21,12 @@
 #' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
 #' @examples
-#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "Timestamp", interpolate = TRUE)
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "DateTIme", interpolate = TRUE)
 #' plotMultiSeries_differentUnits(
-#'     joined_data$Timestamp,
+#'     joined_data$DateTIme,
 #'     joined_data$Reading,
 #'     joined_data$Altitude_m,
-#'     domain = c(min(NS57_LINK_TLM$Timestamp), max(NS57_LINK_TLM$Timestamp)),
+#'     domain = c(min(NS57_LINK_TLM$DateTIme), max(NS57_LINK_TLM$DateTIme)),
 #'     x_name = "Time",
 #'     x_unit = "24hr",
 #'     y1_name = "Geiger Counter",
@@ -180,20 +180,31 @@ plotMultiSeries_differentUnits <-
         }
 
         p <- par('usr')
-        text(p[2] + right_mar*350, mean(p[3:4]), labels = y2_lab, col = y2_color, xpd = NA, srt = -90)
+        text(
+            p[2] + right_mar * 350,
+            mean(p[3:4]),
+            labels = y2_lab,
+            col = y2_color,
+            xpd = NA,
+            srt = -90
+        )
 
         #mtext(y2_lab,
         #      side = 4,
         #      col = y2_color,
         #      line = right_mar - 1)
 
-        if (class(x)[1] == "POSIXct")
+        if ("POSIXct" %in% class(x))
         {
-            axis.POSIXct(1, x) # use axis.POSIXct for POSIXct datetime objects
+            axis.POSIXct(1, seq(
+                from = domain[1],
+                to = domain[2],
+                by = 60
+            ), format = "%H:%M:%S") # use axis.POSIXct for POSIXct datetime objects
         }
         else
         {
-            axis(1, pretty(range(x), 10))
+            axis(1, pretty(domain, 10))
         }
 
         # write bottom axis label

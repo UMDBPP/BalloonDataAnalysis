@@ -4,14 +4,14 @@
 \alias{joinData_interpolate}
 \title{Join datasets and interpolate missing fields}
 \usage{
-joinData_interpolate(data_1, data_2, key = "Timestamp", interpolate = TRUE)
+joinData_interpolate(data_1, data_2, by, interpolate = TRUE)
 }
 \arguments{
 \item{data_1}{First dataset.}
 
 \item{data_2}{Second dataset.}
 
-\item{key}{Key with which to join datasets.}
+\item{by}{Key with which to join datasets.}
 
 \item{interpolate}{Wether to interpolate data. Defaults to TRUE.}
 }

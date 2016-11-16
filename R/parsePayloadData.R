@@ -3,6 +3,7 @@
 #' Parses and cleans data from given data file, assuming format of given payload.
 #' @param data_file Data file in CSV format.
 #' @param payload Payload from which data originated. Defaults to "LINK-TLM".
+#' @param launch_date Date of launch in YYYY-MM-DD format. Defaults to NULL.
 #' @param launch_timezone Timezone of launch. Run OlsonNames for a list of timezones. Defaults to system timezone.
 #' @return Returns data frame of parsed payload data, standardized to POSIXct timestamps and SI units.
 #' @export
@@ -16,10 +17,13 @@
 parsePayloadData <-
     function(data_file,
              payload = c("LINK-TLM", "IRENE", "CellTracker"),
+             launch_date = NULL,
              launch_timezone = Sys.timezone())
     {
         if (payload == "LINK-TLM")
         {
+            internal_timezone = launch_timezone
+
             # get string from file
             file_string <-
                 readChar(data_file, file.info(data_file)$size)
@@ -39,7 +43,7 @@ parsePayloadData <-
 
             colnames(parsed_data) <-
                 c(
-                    "Timestamp",
+                    "DateTime",
                     "Latitude",
                     "Longitude",
                     "Altitude_m",
@@ -62,11 +66,12 @@ parsePayloadData <-
                 measurements::conv_unit(parsed_data$Ground_Speed_m_s, "mph", "m_per_sec")
 
             # get Unix epoch timestamps
-            parsed_data$Timestamp <-
-                as.POSIXct(format(
-                    as.POSIXct(parsed_data$Timestamp, tz = launch_timezone),
-                    tz = Sys.timezone()
-                ), tz = Sys.timezone())
+            parsed_data$DateTime <-
+                as.POSIXct(parsed_data$DateTime, tz = internal_timezone)
+            attr(parsed_data$DateTime, "tzone") <- launch_timezone
+
+            # replace 0 with NA
+            parsed_data[parsed_data == 0] <- NA
         }
         else if (payload == "IRENE")
         {
@@ -78,56 +83,58 @@ parsePayloadData <-
                 c("Date", "Time", "Reading", "Unit")
 
             # get Unix epoch timestamps (IRENE records in Zulu time to separate Date and Time columns, and in American date format)
-            parsed_data$Timestamp <-
-                as.POSIXct(format(
-                    as.POSIXct(
-                        paste(parsed_data$Date, parsed_data$Time),
-                        format = "%m/%d/%y %H:%M:%S",
-                        tz = "Zulu"
-                    ),
-                    tz = Sys.timezone()
-                ), tz = Sys.timezone())
+            parsed_data$DateTime <-
+                as.POSIXct(
+                    paste(parsed_data$Date, parsed_data$Time),
+                    format = "%m/%d/%y %H:%M:%S",
+                    tz = internal_timezone
+                )
+            attr(parsed_data$DateTime, "tzone") <- launch_timezone
+
             parsed_data$Date <- NULL
             parsed_data$Time <- NULL
 
             # reorder columns to put timestamp first
             parsed_data <- parsed_data[c(3, 1, 2)]
+
+            # replace 0 with NA
+            parsed_data[parsed_data == 0] <- NA
         }
         else if (payload == "CellTracker")
         {
-            internal_timezone <- "GMT"
+            if (is.null(launch_date))
+            {
+                stop("Cell Tracker requires launch date.")
+            }
+
+            internal_timezone <- "Zulu"
 
             parsed_data <-
                 read.csv(
                     data_file,
                     col.names = c(
-                        "Timestamp",
+                        "DateTime",
                         "Latitude",
-                        "Longtitude",
+                        "Longitude",
                         "Altitude_m",
                         "Signal_Strength"
                     )
                 )
 
             # convert to POSIXct timestamps
-            parsed_data$Timestamp <-
-                as.POSIXct(format(
-                    as.POSIXct(
-                        paste("2016-09-17", parsed_data$Timestamp),
-                        "%Y-%m-%d %T" ,
-                        tz = internal_timezone
-                    ),
-                    tz = Sys.timezone()
-                ), tz = Sys.timezone())
+            parsed_data$DateTime <-
+                as.POSIXct(paste(launch_date, parsed_data$DateTime),
+                           "%Y-%m-%d %T",
+                           tz = internal_timezone)
+            attr(parsed_data$DateTime, "tzone") <- launch_timezone
 
             # remove rows with NA timestamps
             parsed_data <-
-                parsed_data[complete.cases(parsed_data),]
+                parsed_data[complete.cases(parsed_data), ]
 
-            # remove rows with 0 data which implies no signal
-            parsed_data <-
-                parsed_data[apply(parsed_data[c(2:5)], 1, function(z)
-                    ! any(z == 0)),]
+            # remove all rows containing 0
+            parsed_data[parsed_data == 0] <- NA
+            parsed_data <- parsed_data[complete.cases(parsed_data), ]
         }
         else
         {
