@@ -9,11 +9,11 @@
 #' @param range Range of plot.
 #' @param x_axis_units Defaults to "x".
 #' @param y_axis_units Defaults to "y".
-#' @param y1_name Defaults to "y1".
+#' @param y1_label Defaults to "y1".
 #' @param y1_color Defaults to "red".
-#' @param y2_name Defaults to "y2".
+#' @param y2_label Defaults to "y2".
 #' @param y2_color Defaults to "blue".
-#' @param title Defaults to "y1_name and y2_name vs x_axis_units"
+#' @param title Defaults to "y1_label and y2_label vs x_axis_units"
 #' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
 #' @export
 #' @examples
@@ -23,8 +23,8 @@
 #'     NS57_LINK_TLM$Ground_Speed_m_s,
 #'     x_axis_units = "Time (24hr)",
 #'     y_axis_units = "meters per second",
-#'     y1_name = "Ascent Rate",
-#'     y2_name = "Ground Speed",
+#'     y1_label = "Ascent Rate",
+#'     y2_label = "Ground Speed",
 #'     legend_pos = "bottomleft"
 #' )
 
@@ -36,9 +36,9 @@ plotMultiSeries_sameUnit <-
              range = NULL,
              x_axis_units = "x",
              y_axis_units = "y",
-             y1_name = "y1",
+             y1_label = NULL,
              y1_color = "red",
-             y2_name = "y2",
+             y2_label = NULL,
              y2_color = "blue",
              title = NULL,
              legend_pos = "topleft")
@@ -57,11 +57,21 @@ plotMultiSeries_sameUnit <-
         if (is.null(title))
         {
             title <-
-                paste(y1_name,
+                paste(y1_label,
                       "and",
-                      y2_name,
+                      y2_label,
                       "vs",
                       x_axis_units)
+        }
+
+        if(is.null(y1_label))
+        {
+            y1_label <- deparse(substitute(y1))
+        }
+
+        if(is.null(y2_label))
+        {
+            y2_label <- deparse(substitute(y2))
         }
 
         plot(
@@ -91,7 +101,7 @@ plotMultiSeries_sameUnit <-
         {
             legend(
                 legend_pos,
-                legend = c(y1_name, y2_name),
+                legend = c(y1_label, y2_label),
                 text.col = c(y1_color, y2_color),
                 pch = c(15, 16),
                 col = c(y1_color, y2_color)

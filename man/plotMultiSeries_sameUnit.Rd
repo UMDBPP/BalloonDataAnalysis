@@ -5,8 +5,8 @@
 \title{Plot multiple series with the same unit but possibly different dataset sizes on the same axis}
 \usage{
 plotMultiSeries_sameUnit(x, y1, y2, domain = NULL, range = NULL,
-  x_axis_units = "x", y_axis_units = "y", y1_name = "y1",
-  y1_color = "red", y2_name = "y2", y2_color = "blue", title = NULL,
+  x_axis_units = "x", y_axis_units = "y", y1_label = NULL,
+  y1_color = "red", y2_label = NULL, y2_color = "blue", title = NULL,
   legend_pos = "topleft")
 }
 \arguments{
@@ -24,15 +24,15 @@ plotMultiSeries_sameUnit(x, y1, y2, domain = NULL, range = NULL,
 
 \item{y_axis_units}{Defaults to "y".}
 
-\item{y1_name}{Defaults to "y1".}
+\item{y1_label}{Defaults to "y1".}
 
 \item{y1_color}{Defaults to "red".}
 
-\item{y2_name}{Defaults to "y2".}
+\item{y2_label}{Defaults to "y2".}
 
 \item{y2_color}{Defaults to "blue".}
 
-\item{title}{Defaults to "y1_name and y2_name vs x_axis_units"}
+\item{title}{Defaults to "y1_label and y2_label vs x_axis_units"}
 
 \item{legend_pos}{Position of legend, NULL for no legend. Defaults to "topleft".}
 }
@@ -47,8 +47,8 @@ plotMultiSeries_sameUnit(
     NS57_LINK_TLM$Ground_Speed_m_s,
     x_axis_units = "Time (24hr)",
     y_axis_units = "meters per second",
-    y1_name = "Ascent Rate",
-    y2_name = "Ground Speed",
+    y1_label = "Ascent Rate",
+    y2_label = "Ground Speed",
     legend_pos = "bottomleft"
 )
 }

@@ -1,86 +1,66 @@
 #' Plot multiple series with different units on the same axis
 #'
 #' Plots two series with different units that share a common key.
-#' Works best with interpolated data; balloonMergeDatasets(y1, y2, interpolate = TRUE)
+#' Works best with interpolated data; balloonMergeDatasets(y_left, y2, interpolate = TRUE)
 #' Inspired by http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
 #' @param x Shared x data (key).
-#' @param y1 First series.
-#' @param y2 Second series.
-#' @param domain Defaults to domain of x axis.
-#' @param x_name Defaults to "x".
-#' @param x_unit Defaults to NULL.
-#' @param y1_name Defaults to "y1".
-#' @param y1_unit Defaults to NULL.
-#' @param y1_color Defaults to "red".
-#' @param y1_draw_line Defaults to FALSE.
-#' @param y2_name Defaults to "y2".
-#' @param y2_unit Defaults to NULL.
-#' @param y2_color Defaults to "blue".
-#' @param y2_draw_line Defaults to FALSE.
-#' @param title Title of plot. Defaults to "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)".
-#' @param legend_pos Position of legend, NULL for no legend. Defaults to "topleft".
+#' @param y_left First series.
+#' @param y_right Second series.
+#' @param xlim Defaults to domain of x axis.
+#' @param xlab X series label.
+#' @param ylab_left Left Y series label.
+#' @param col_left Defaults to "red".
+#' @param ylab_right Right Y series label.
+#' @param col_right Defaults to "blue".
+#' @param type Defaults to FALSE.
+#' @param type Defaults to FALSE.
+#' @param main Title of plot. Defaults to NULL.
 #' @export
 #' @examples
-#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "DateTIme", interpolate = TRUE)
+#' joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "DateTime", interpolate = TRUE)
 #' plotMultiSeries_differentUnits(
-#'     joined_data$DateTIme,
-#'     joined_data$Reading,
-#'     joined_data$Altitude_m,
-#'     domain = c(min(NS57_LINK_TLM$DateTIme), max(NS57_LINK_TLM$DateTIme)),
-#'     x_name = "Time",
-#'     x_unit = "24hr",
-#'     y1_name = "Geiger Counter",
-#'     y1_unit = "counts per minute",
-#'     y2_name = "Altitude",
-#'     y2_unit = "meters",
-#'     y2_draw_line = TRUE,
-#'     legend_pos = NULL
+#'     x = joined_data$DateTime,
+#'     y_left = joined_data$Reading,
+#'     y_right = joined_data$Altitude_m,
+#'     xlim = c(min(NS57_LINK_TLM$DateTime), max(NS57_LINK_TLM$DateTime)),
+#'     xlab = "Time",
+#'     ylab_left = "Geiger Counter (CPM)",
+#'     ylab_right = "Altitude (m)",
+#'     type = "l"
 #' )
 
 plotMultiSeries_differentUnits <-
     function(x,
-             y1,
-             y2,
-             domain = NULL,
-             x_name = "x",
-             x_unit = NULL,
-             y1_name = "y1",
-             y1_unit = NULL,
-             y1_color = "red",
-             y1_draw_line = FALSE,
-             y2_name = "y2",
-             y2_unit = NULL,
-             y2_color = "blue",
-             y2_draw_line = FALSE,
-             title = NULL,
-             legend_pos = "topleft")
+             y_left,
+             y_right,
+             xlim = NULL,
+             xlab = "x",
+             ylab_left = NULL,
+             col_left = "red",
+             ylab_right = NULL,
+             col_right = "blue",
+             type = "p",
+             main = NULL)
     {
-        # if domain was not given, use domain of x
-        if (is.null(domain))
+        # if xlim was not given, use domain of x
+        if (is.null(xlim))
         {
-            domain <- c(min(x), max(x))
+            xlim <- c(min(x), max(x))
         }
 
-        # if title was not given, use "y1_name (y1_unit) and y2_name (y2_unit) vs x_name (x_unit)"
-        if (is.null(title))
+        if (is.null(xlab))
         {
-            title <- y1_name
-            if (!is.null(y1_unit))
-            {
-                title <- paste(title, " (", y1_unit, ") and ", sep = "")
-            }
+            xlab <- deparse(substitute(x))
+        }
 
-            title <- paste(title, y2_name, " ", sep = "")
-            if (!is.null(y2_unit))
-            {
-                title <- paste(title, "(", y2_unit, ") vs ", sep = "")
-            }
+        if (is.null(ylab_left))
+        {
+            ylab_left <- deparse(substitute(y_left))
+        }
 
-            title <- paste(title, x_name, " ", sep = "")
-            if (!is.null(x_unit))
-            {
-                title <- paste(title, "(", x_unit, ")", sep = "")
-            }
+        if (is.null(ylab_right))
+        {
+            ylab_right <- deparse(substitute(y_right))
         }
 
         # calculate plot margins
@@ -89,14 +69,14 @@ plotMultiSeries_differentUnits <-
         top_mar = 2.75
         right_mar = 2.75
 
-        temp = max(y1)
+        temp = max(y_left)
         while (temp >= 1)
         {
             temp = temp / 10
             left_mar = left_mar + 1
         }
 
-        temp = max(y2)
+        temp = max(y_right)
         while (temp >= 1)
         {
             temp = temp / 10
@@ -120,117 +100,75 @@ plotMultiSeries_differentUnits <-
 
         plot(
             x,
-            y1,
-            xlim = domain,
+            y_left,
+            xlim = xlim,
             axes = FALSE,
             xlab = "",
             ylab = "",
-            type = "p",
-            pch = 16,
-            cex = 0.5,
-            col = y1_color,
-            main = title
+            type = type,
+            col = col_left,
+            main = main
         )
 
-        if (y1_draw_line)
-        {
-            lines(x, y1, col = y1_color)
-        }
-
-        axis(2, col.axis = y1_color, las = 1)
+        axis(2, col.axis = col_left, las = 1)
 
         # write left axis label
-        y1_lab = y1_name
-        if (!is.null(y1_unit))
-        {
-            y1_lab = paste(y1_lab, " (", y1_unit, ")", sep = "")
-        }
-        mtext(y1_lab,
+        mtext(ylab_left,
               side = 2,
-              col = y1_color,
+              col = col_left,
               line = left_mar - 1)
 
         par(new = TRUE)
 
         plot(
             x,
-            y2,
-            xlim = domain,
+            y_right,
+            xlim = xlim,
             xlab = "",
             ylab = "",
             axes = FALSE,
-            type = "p",
-            pch = 15,
-            cex = 0.5,
-            col = y2_color
+            type = type,
+            col = col_right
         )
 
-        if (y2_draw_line)
-        {
-            lines(x, y2, col = y2_color)
-        }
-
-        axis(4, col.axis = y2_color, las = 1)
-
-        # write right axis label
-        y2_lab = y2_name
-        if (!is.null(y2_unit))
-        {
-            y2_lab = paste(y2_lab, " (", y2_unit, ")", sep = "")
-        }
+        axis(4, col.axis = col_right, las = 1)
 
         p <- par('usr')
+
+        # write right axis label
         text(
             p[2] + right_mar * 350,
             mean(p[3:4]),
-            labels = y2_lab,
-            col = y2_color,
+            labels = ylab_right,
+            col = col_right,
             xpd = NA,
             srt = -90
         )
 
-        #mtext(y2_lab,
+        #mtext(ylab_right,
         #      side = 4,
-        #      col = y2_color,
+        #      col = col_right,
         #      line = right_mar - 1)
 
         if ("POSIXct" %in% class(x))
         {
             axis.POSIXct(1, seq(
-                from = domain[1],
-                to = domain[2],
+                from = xlim[1],
+                to = xlim[2],
                 by = 60
             ), format = "%H:%M:%S") # use axis.POSIXct for POSIXct datetime objects
         }
         else
         {
-            axis(1, pretty(domain, 10))
+            axis(1, pretty(xlim, 10))
         }
 
         # write bottom axis label
-        x_lab = x_name
-        if (!is.null(x_unit))
-        {
-            x_lab = paste(x_lab, " (", x_unit, ")", sep = "")
-        }
-        mtext(x_lab,
+        mtext(xlab,
               side = 1,
               col = "black",
               line = bottom_mar - 1)
 
-        # draw legend if needed
-        if (!is.null(legend_pos))
-        {
-            legend(
-                legend_pos,
-                legend = c(y1_name, y2_name),
-                text.col = c(y1_color, y2_color),
-                pch = c(16, 15),
-                col = c(y1_color, y2_color)
-            )
-        }
-
-        # draw box and grid
+        # draw box
         box()
-        grid()
     }

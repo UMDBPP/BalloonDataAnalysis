@@ -37,7 +37,7 @@ joinData_interpolate <-
             {
                 for (column in colnames(joined_data))
                 {
-                    if ("numeric" %in% data_types[[column]])
+                    if ("numeric" %in% data_types[[column]] | "integer" %in% data_types[[column]])
                     {
                         joined_data[[column]] <-
                             zoo::na.fill(
