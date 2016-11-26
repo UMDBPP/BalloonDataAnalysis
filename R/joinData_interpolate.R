@@ -28,22 +28,26 @@ joinData_interpolate <-
                 all = TRUE
             )
 
-        # interpolate using zoo package
+        # replace NA values with interpolated values using zoo package
         if (interpolate)
         {
-            data_types <- lapply(joined_data, class)
-
-            for (key in by)
+            if (any(is.na(joined_data)))
             {
-                for (column in colnames(joined_data))
+                data_types <- lapply(joined_data, class)
+
+                for (key in by)
                 {
-                    if ("numeric" %in% data_types[[column]] | "integer" %in% data_types[[column]])
+                    for (column in colnames(joined_data))
                     {
-                        joined_data[[column]] <-
-                            zoo::na.fill(
-                                zoo::na.approx(joined_data[[column]], joined_data[[key]], na.rm = FALSE),
-                                "extend"
-                            )
+                        if ("numeric" %in% data_types[[column]] |
+                            "integer" %in% data_types[[column]])
+                        {
+                            joined_data[[column]] <-
+                                zoo::na.fill(
+                                    zoo::na.approx(joined_data[[column]], joined_data[[key]], na.rm = FALSE),
+                                    "extend"
+                                )
+                        }
                     }
                 }
             }
