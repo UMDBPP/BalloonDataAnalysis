@@ -8,10 +8,10 @@
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.fill
 #' @examples
-#' interpolated_dataset <- merge.interpolate(NS57_LINK_TLM, NS57_IRENE)
+#' interpolated_dataset <- interpolate(NS57_LINK_TLM, NS57_IRENE)
 #'
 
-merge.interpolate <-
+interpolate <-
     function(data_1,
              data_2,
              by)
