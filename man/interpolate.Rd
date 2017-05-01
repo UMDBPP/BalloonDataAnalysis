@@ -20,4 +20,3 @@ Merges datasets, specifically from IRENE and LINK-TLM
 interpolated_dataset <- interpolate(NS57_LINK_TLM, NS57_IRENE)
 
 }
-

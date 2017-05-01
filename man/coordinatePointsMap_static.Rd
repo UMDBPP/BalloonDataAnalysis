@@ -26,4 +26,3 @@ coordinatePointsMap_static(
     point_color = NS57_LINK_TLM$Altitude_m
 )
 }
-

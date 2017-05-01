@@ -28,4 +28,3 @@ tlm_data <- parsePayloadData("NS57_parsedPackets.txt", "LINK-TLM")
 irene_data <- parsePayloadData("NS57LaunchData.txt", "IRENE")
 }
 }
-

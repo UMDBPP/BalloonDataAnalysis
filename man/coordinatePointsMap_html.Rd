@@ -26,4 +26,3 @@ Plots given longitudes and latitudes onto a HTML map using Google Visualization.
 \examples{
 coordinatePointsMap_html(NS57_LINK_TLM$Latitude, NS57_LINK_TLM$Longitude, NS57_LINK_TLM)
 }
-
