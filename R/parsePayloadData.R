@@ -109,17 +109,24 @@ parsePayloadData <-
 
             internal_timezone <- "Zulu"
 
-            parsed_data <-
-                read.csv(
-                    data_file,
-                    col.names = c(
-                        "DateTime",
-                        "Latitude",
-                        "Longitude",
-                        "Altitude_m",
-                        "Signal_Strength"
-                    )
-                )
+            parsed_data <- read.csv(data_file, row.names=NULL)
+
+            # check for degree-minute-second coordinate format and convert to decimal coordinates
+            if (length(parsed_data) == 9)
+            {
+                parsed_data$Latitude <-
+                    parsed_data[[2]] + (parsed_data[[3]] / 60) + (parsed_data[[4]] / 60 / 60)
+                parsed_data$Longitude <-
+                    parsed_data[[5]] + (parsed_data[[6]] / 60) + (parsed_data[[7]] / 60 / 60)
+                parsed_data <- parsed_data[c(1, 10, 11, 8, 9)]
+            }
+
+            # rename columns
+            colnames(parsed_data) <- c("DateTime",
+                                       "Latitude",
+                                       "Longitude",
+                                       "Altitude_m",
+                                       "Signal_Strength")
 
             # convert to POSIXct timestamps
             parsed_data$DateTime <-
@@ -127,10 +134,6 @@ parsePayloadData <-
                            "%Y-%m-%d %T",
                            tz = internal_timezone)
             attr(parsed_data$DateTime, "tzone") <- launch_timezone
-
-            # remove rows with NA timestamps
-            parsed_data <-
-                parsed_data[complete.cases(parsed_data), ]
 
             # remove all rows containing 0
             parsed_data[parsed_data == 0] <- NA

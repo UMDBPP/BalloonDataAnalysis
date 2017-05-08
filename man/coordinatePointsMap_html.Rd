@@ -21,9 +21,8 @@ coordinatePointsMap_html(latitudes, longitudes, data_frame, api_key = NULL,
 \item{output_html_file}{Name of output file. Defaults to NULL for no file writing.}
 }
 \description{
-Plots given longitudes and latitudes onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
+Plots given longitudes and latitudes onto a HTML map using Google Visualization.
 }
 \examples{
-coordinatePointsMap_html(NS57_LINK_TLM)
+coordinatePointsMap_html(NS57_LINK_TLM$Latitude, NS57_LINK_TLM$Longitude, NS57_LINK_TLM)
 }
-

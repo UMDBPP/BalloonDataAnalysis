@@ -2,7 +2,7 @@
 
 export(coordinatePointsMap_html)
 export(coordinatePointsMap_static)
-export(joinData_interpolate)
+export(interpolate)
 export(parsePayloadData)
 export(plotMultiSeries_differentUnits)
 export(plotMultiSeries_sameUnit)

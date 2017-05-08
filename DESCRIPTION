@@ -7,4 +7,4 @@ Description: This package performs data parsing and anaylsis tools useful to the
 Imports: ggplot2, ggmap, googleVis, measurements, zoo
 License: MIT
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

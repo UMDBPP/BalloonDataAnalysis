@@ -4,34 +4,23 @@
 \alias{plotMultiSeries_differentUnits}
 \title{Plot multiple series with different units on the same axis}
 \usage{
-plotMultiSeries_differentUnits(x, y_left, y_right, xlim = NULL, xlab = "x",
-  ylab_left = NULL, col_left = "red", ylab_right = NULL,
-  col_right = "blue", type = "p", main = NULL)
+plotMultiSeries_differentUnits(x, y, xlim = NULL, xlab = NULL,
+  ylab = NULL, type = "p", main = NULL)
 }
 \arguments{
-\item{x}{Shared x data (key).}
+\item{x}{X series.}
 
-\item{y_left}{First series.}
-
-\item{y_right}{Second series.}
+\item{y}{Y series.}
 
 \item{xlim}{Defaults to domain of x axis.}
 
-\item{xlab}{X series label.}
+\item{xlab}{X labels.}
 
-\item{ylab_left}{Left Y series label.}
-
-\item{col_left}{Defaults to "red".}
-
-\item{ylab_right}{Right Y series label.}
-
-\item{col_right}{Defaults to "blue".}
+\item{ylab}{Y labels.}
 
 \item{type}{Defaults to FALSE.}
 
 \item{main}{Title of plot. Defaults to NULL.}
-
-\item{type}{Defaults to FALSE.}
 }
 \description{
 Plots two series with different units that share a common key.
@@ -39,15 +28,12 @@ Works best with interpolated data; balloonMergeDatasets(y_left, y2, interpolate 
 Inspired by http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
 }
 \examples{
-joined_data <- joinData_interpolate(NS57_LINK_TLM, NS57_IRENE, "DateTime", interpolate = TRUE)
 plotMultiSeries_differentUnits(
-    x = joined_data$DateTime,
-    y_left = joined_data$Reading,
-    y_right = joined_data$Altitude_m,
+    x = list(NS57_IRENE$DateTime, NS57_LINK_TLM$DateTime),
+    y = list(NS57_IRENE$Reading, NS57_LINK_TLM$Altitude_m),
     xlim = c(min(NS57_LINK_TLM$DateTime), max(NS57_LINK_TLM$DateTime)),
-    xlab = "Time",
-    ylab_left = "Geiger Counter (CPM)",
-    ylab_right = "Altitude (m)"
+    xlab = c("Time", "Time"),
+    ylab = c("Geiger Counter (CPM)", "Altitude (m)"),
+    type = "l"
 )
 }
-

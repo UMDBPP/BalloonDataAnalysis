@@ -5,7 +5,7 @@
 \title{Plot coordinate pairs onto static map using ggplot2}
 \usage{
 coordinatePointsMap_static(latitudes, longitudes, point_color = "red",
-  point_size = 3)
+  zoom = 10)
 }
 \arguments{
 \item{latitudes}{List of latitudes. Required.}
@@ -14,7 +14,7 @@ coordinatePointsMap_static(latitudes, longitudes, point_color = "red",
 
 \item{point_color}{Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "red".}
 
-\item{point_size}{Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.}
+\item{zoom}{Zoom level of map, range 1 to 21. Defaults to 10.}
 }
 \description{
 Plots given longitudess and latitudess onto a terrain map of the area. Pass a list as the "point_color" and / or "point_size" arguments in order to represent data graphically.
@@ -23,7 +23,6 @@ Plots given longitudess and latitudess onto a terrain map of the area. Pass a li
 coordinatePointsMap_static(
     NS57_LINK_TLM$Latitude,
     NS57_LINK_TLM$Longitude,
-    point_color = NS57_LINK_TLM$Altitude_m,
+    point_color = NS57_LINK_TLM$Altitude_m
 )
 }
-

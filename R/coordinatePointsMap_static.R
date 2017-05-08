@@ -4,7 +4,7 @@
 #' @param latitudes List of latitudes. Required.
 #' @param longitudes List of longitudes. Required.
 #' @param point_color Color of points. Set to a constant color, or to a list to represent data graphically. Defaults to "red".
-#' @param point_size Size of points. Set to a constant size, or to a list to represent data graphically. Defaults to 2.
+#' @param zoom Zoom level of map, range 1 to 21. Defaults to 10.
 #' @export
 #' @importFrom ggmap get_map
 #' @importFrom ggmap ggmap
@@ -15,14 +15,14 @@
 #' coordinatePointsMap_static(
 #'     NS57_LINK_TLM$Latitude,
 #'     NS57_LINK_TLM$Longitude,
-#'     point_color = NS57_LINK_TLM$Altitude_m,
+#'     point_color = NS57_LINK_TLM$Altitude_m
 #' )
 
 coordinatePointsMap_static <-
     function(latitudes,
              longitudes,
              point_color = "red",
-             point_size = 3)
+             zoom = 10)
     {
         require(ggplot2)
         require(ggmap)
@@ -42,19 +42,24 @@ coordinatePointsMap_static <-
         map <-
             get_map(location = boundaries,
                     maptype = "terrain",
-                    zoom = 10)
+                    zoom = zoom)
 
         points <-
-            data.frame(latitude = latitudes, longitude = longitudes)
+            data.frame(
+                latitude = latitudes,
+                longitude = longitudes,
+                point_color = point_color
+            )
 
         # render to plot viewer
         ggmap(map, base_layer = ggplot(
             points,
             aes(
                 x = longitudes,
-                y = latitudes
+                y = latitudes,
+                colour = point_color
             )
-        )) + geom_path()
+        )) + geom_point()
 
         # remove global variables
         #rm(point_color_global, pos =  globalenv())
