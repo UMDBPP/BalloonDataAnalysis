@@ -7,27 +7,17 @@ This R package performs data parsing and anaylsis tools useful to the University
 ### Installation
 Make sure `R` is installed, and open a new `R` session (console). 
 
-Install `devtools` by running 
+Install the `devtools` package: `install.packages("devtools")`
 
-`install.packages("devtools")`,
-
-then you can run 
-
-`devtools::install_github("UMDBPP/BalloonDataAnalysis")`
-
- to install directly from GitHub.
+Install from GitHub: `devtools::install_github("UMDBPP/BalloonDataAnalysis")`
 
 ### Usage
 
-In an `R` session, load the package using
-
-`library(BalloonDataAnalysis)`
+In an `R` session, load the package: `library(BalloonDataAnalysis)`
 
 In `R`, use `help()` to view documentation and usage instructions.
 
-For instance, to see documentation on parsing payload data, type
-
-`help(read.payload, package = "BalloonDataAnalysis")`
+To view all documentation for this package, run `help(package = "BalloonDataAnalysis")`
 
 ### Functions
 
