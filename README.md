@@ -27,12 +27,12 @@ In `R`, use `help()` to view documentation and usage instructions.
 
 For instance, to see documentation on parsing payload data, type
 
-`help(read.payload)`
+`help(read.payload, package = "BalloonDataAnalysis")`
 
 ### Functions
 
-BalloonDataAnalysis::read.payload
+`BalloonDataAnalysis::read.payload(logfile, data_source, flight_number, flight_date = NULL, start_time = NULL, end_time = NULL, timezone = Sys.timezone())`
 
-BalloonDataAnalysis::join.interpolate
+`BalloonDataAnalysis::join.interpolate(data_1, data_2, by = c("DateTime", "Data_Source", "Flight"), exclude = NULL)`
 
-BalloonDataAnalysis::map.points
+`BalloonDataAnalysis::map.points(location_data, zoom = 10)`
