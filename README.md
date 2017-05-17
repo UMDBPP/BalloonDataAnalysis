@@ -1,36 +1,38 @@
 # BalloonDataAnalysis
-R scripts for analyzing and visualizing balloon data
+`R` scripts for analyzing and visualizing balloon data
 
-R (https://www.r-project.org/) is a versatile scripting language made for statistical applications, data management, and visualization.
+`R` (https://www.r-project.org/) is a versatile scripting language made for statistical applications, data management, and visualization.
 This R package performs data parsing and anaylsis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
 
 ### Installation
-This package is not currently on CRAN. 
+Make sure `R` is installed, and open a new `R` session (console). 
 
-In order to install you will need the "devtools" package:
+Install `devtools` by running 
 
-`install.packages("devtools")`
+`install.packages("devtools")`,
 
-After devtools installs you can then install from this repository: 
+then you can run 
 
 `devtools::install_github("UMDBPP/BalloonDataAnalysis")`
 
+ to install directly from GitHub.
+
 ### Usage
 
-Type a question mark before function names to view their documentation and usage instructions. For instance, to see documentation on parsing payload data, type
+In an `R` session, load the package using
 
-`?parsePayloadData`
+`library(BalloonDataAnalysis)`
+
+In `R`, use `help()` to view documentation and usage instructions.
+
+For instance, to see documentation on parsing payload data, type
+
+`help(read.payload)`
 
 ### Functions
 
-BalloonDataAnalysis::parsePayloadData
+BalloonDataAnalysis::read.payload
 
-BalloonDataAnalysis::joinData_interpolate
+BalloonDataAnalysis::join.interpolate
 
-BalloonDataAnalysis::plotMultiSeries_sameUnits
-
-BalloonDataAnalysis::plotMultiSeries_differentUnits
-
-BalloonDataAnalysis::coordinatePointsMap_static
-
-BalloonDataAnalysis::coordinatePointsMap_html
+BalloonDataAnalysis::map.points
