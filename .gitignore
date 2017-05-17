@@ -1,5 +1,7 @@
-.RData
-.RHistory
+*.RData
+*.RHistory
+*.Rproj.user
+*.Rproj
 
 #################
 ## Eclipse
@@ -217,4 +219,3 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-.Rproj.user
