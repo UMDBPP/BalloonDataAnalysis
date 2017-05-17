@@ -4,7 +4,7 @@
 \name{NS57.Rad}
 \alias{NS57.Rad}
 \title{IRENE Data}
-\format{An object of class \code{data.frame} with 358 rows and 5 columns.}
+\format{An object of class \code{data.frame} with 99 rows and 5 columns.}
 \usage{
 NS57.Rad
 }
