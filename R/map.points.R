@@ -1,7 +1,7 @@
 #' Plot coordinate pairs onto Google map tile
 #'
 #' Plots given longitudes and latitudes onto a Google map tile of the area.
-#' Pass a list to "color" to represent data graphically.
+#'
 #' @param location_data Dataset with latitude longitude pairs.
 #' @param zoom Zoom level of map, range 1 to 21, defaults to 10.
 #' @export
