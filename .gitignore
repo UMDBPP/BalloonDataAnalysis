@@ -2,6 +2,7 @@
 *.RHistory
 *.Rproj.user
 *.Rproj
+.Rbuildignore
 
 #################
 ## Eclipse
