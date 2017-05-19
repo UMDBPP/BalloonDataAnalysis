@@ -5,7 +5,7 @@ Version: 1.2.0
 Authors@R: person("Zach", "Burnett", email = "zrb@umd.edu", role = c("aut", "cre"))
 Description: This package performs data parsing and anaylsis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
 Depends: R (>= 2.10)
-Imports: ggplot2, ggmap, zoo
+Imports: ggplot2, ggmap, zoo, jsonlite
 License: MIT + file LICENSE
 LazyData: TRUE
 RoxygenNote: 6.0.1

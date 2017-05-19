@@ -31,7 +31,17 @@ It standardizes units and calculates ascent rate, ground speed, and downrange di
 }
 \examples{
 \dontrun{
-NS57.Coord <- read.payload("NS57_parsedPackets.txt", "LINK-TLM", "NS57", start_time = "07:50:31", end_time = "09:27:34")
-NS57.Rad <- read.payload("NS57LaunchData.txt", "IRENE", "NS57", start_time = "07:50:31", end_time = "09:27:34")
+NS57.Coord <- read.payload("NS57_parsedPackets.txt", 
+        "LINK-TLM", 
+        "NS57", 
+        start_time = "07:50:31", 
+        end_time = "09:27:34"
+)
+NS57.Rad <- read.payload("NS57LaunchData.txt", 
+        "IRENE", 
+        "NS57", 
+        start_time = "07:50:31", 
+        end_time = "09:27:34"
+)
 }
 }
