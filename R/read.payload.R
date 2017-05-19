@@ -16,6 +16,7 @@
 #' @importFrom utils head
 #' @importFrom utils tail
 #' @importFrom stats complete.cases
+#' @importFrom jsonlite fromJSON
 #' @examples
 #' \dontrun{
 #' NS57.Coord <- read.payload("NS57_parsedPackets.txt", "LINK-TLM", "NS57", start_time = "07:50:31", end_time = "09:27:34")
@@ -40,28 +41,45 @@ read.payload <-
         {
             internal_timezone <- timezone
 
-            # get string from file
-            file_string <-
-                readChar(logfile, file.info(logfile)$size)
+            file_extension <-
+                tail(unlist(strsplit(logfile, "[.]")), n = 1)
 
-            # remove startup lines from software restarts
-            file_string <-
-                gsub("LOG BEGINNING ON.*?>\n", "", file_string)
+            if (file_extension == "json")
+            {
+                requireNamespace("jsonlite")
+                parsed_data <- fromJSON(logfile)
+                parsed_data <- parsed_data[c(3:6, 9, 7, 8, 2)]
+            }
+            else if (file_extension == "txt")
+            {
+                # get string from file
+                file_string <-
+                    readChar(logfile, file.info(logfile)$size)
 
-            # remove extra header lines from some software restarts
-            file_string <-
-                gsub("Callsign,*?>\nCallsign,",
-                     "Callsign,",
-                     file_string)
+                # remove startup lines from software restarts
+                file_string <-
+                    gsub("LOG BEGINNING ON .*?\n\n", "", file_string)
 
-            # remove the log string from the end of each line
-            file_string <- gsub("  <.*?>", "", file_string)
+                # remove the log string from the end of each line
+                file_string <-
+                    gsub(" < LOGGED AT .*? >\n", "\n", file_string)
 
-            # read data to local variable, assuming CSV format
-            parsed_data <- read.csv(textConnection(file_string))
+                # LINK-TLM switched from pointy brackets to a comma starting with NS64
+                file_string <-
+                    gsub(",LOGGED AT .*?\n", "\n", file_string)
 
-            # reorder columns
-            parsed_data <- parsed_data[c(2:8, 1)]
+                # remove extra header lines from some software restarts
+                file_string <-
+                    gsub("\nCallsign.*?\n",
+                         "\n",
+                         file_string)
+
+                # read data to local variable, assuming CSV format
+                parsed_data <- read.csv(textConnection(file_string))
+
+                # reorder columns
+                parsed_data <- parsed_data[c(2:8, 1)]
+            }
 
             # rename columns
             colnames(parsed_data) <-
@@ -76,9 +94,22 @@ read.payload <-
                     "Callsign"
                 )
 
+            # convert altitude from feet to meters
+            parsed_data$Altitude_m <-
+                parsed_data$Altitude_m * 0.3048
+
+            # make sure callsigns are factors
+            parsed_data$Callsign <- as.factor(parsed_data$Callsign)
+
+            parsed_data$Downrange_Distance_m <- 0
+            parsed_data$Ascent_Rate_m_s <- 0
+            parsed_data$Ground_Speed_m_s <- 0
+
             # get Unix epoch timestamps
             parsed_data$DateTime <-
-                as.POSIXct(parsed_data$DateTime, tz = internal_timezone)
+                as.POSIXct(parsed_data$DateTime,
+                           format = "%Y-%m-%d %H:%M:%S",
+                           tz = internal_timezone)
         }
         else if (data_source == "CellTracker")
         {
@@ -206,10 +237,6 @@ read.payload <-
                         source_log$Longitude
                     )
 
-                # convert altitude from feet to meters
-                source_log$Altitude_m <-
-                    source_log$Altitude_m * 0.3048
-
                 # calculate ascent rates
                 source_log$Ascent_Rate_m_s <-
                     .rates(source_log$Altitude_m,
@@ -227,8 +254,7 @@ read.payload <-
                         source_log$DateTime
                     ))
 
-                parsed_data[which(parsed_data$Callsign == source_name),] <-
-                    source_log
+                parsed_data[parsed_data$Callsign == source_name, ] <- source_log
             }
         }
         else if (data_source == "CellTracker")
@@ -241,10 +267,6 @@ read.payload <-
                     parsed_data$Latitude,
                     parsed_data$Longitude
                 )
-
-            # convert altitude from feet to meters
-            parsed_data$Altitude_m <-
-                parsed_data$Altitude_m * 0.3048
 
             # calculate ascent rates
             parsed_data$Ascent_Rate_m_s <-
