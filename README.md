@@ -1,19 +1,20 @@
 # BalloonDataAnalysis
-R scripts for analyzing and visualizing balloon data
+This `R` package performs data parsing and analysis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
 
-R (https://www.r-project.org/) is a versatile scripting language made for statistical applications, data analysis, and visualization. It is very similar to MATLAB in the way it approaches data structures; however, I think R is much easier to use and understand.
-This R package performs data parsing and analysis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
+[`R`](https://www.r-project.org/) is a versatile scripting language made for statistical applications, data analysis, and visualization. It is very similar to `MATLAB` in the way it approaches data structures; however, I think `R` is much easier to use and understand.
+
+[Click here if you are already familiar with `MATLAB` and would like to know analagous commands in `R`](http://mathesaurus.sourceforge.net/octave-r.html)
 
 ### Installation
-If you have not installed R, you can download it from https://cloud.r-project.org/.
+If you have not installed `R`, [you can download it from here](https://cloud.r-project.org/).
 
-Run R. It will open a console window in which you can run commands.
+Once you have installed `R`, running it will open a console window in which you can type commands.
 
-Install the "devtools" package by running the following command: 
+Install the `devtools` package by running the following command: 
 
 `install.packages("devtools")`
 
-Now you can use devtools to install BalloonDataAnalysis from GitHub: 
+Now you can use devtools to install this package directly from GitHub: 
 
 `devtools::install_github("UMDBPP/BalloonDataAnalysis")`
 
@@ -23,9 +24,13 @@ Load the package using the following command:
 
 `library(BalloonDataAnalysis)`
 
-In R, to view documentation and usage instructions of a specific command or package, use `help(name_of_command)` (or precede the command with a question mark `?name_of_command`). For example, to view all documentation for this package, run `help(package = "BalloonDataAnalysis")`, and to view documentation for a specific function once the package is loaded, either run `help(function_name)`, or just `?function_name`
+In `R`, to view documentation and usage instructions of a specific command or package, use `help(name_of_command)` (or precede the command with a question mark `?name_of_command`). For example, to view all documentation for this package, run 
 
-The main function of BalloonDataAnalysis is `read.payload`. It imports data from the log formats of several sources (currently LINK-TLM, CellTracker, preparsed APRS, and IRENE) into useable and standardized data structures in R, adjusts timestamps to local time, and also calculates ascent rates, ground speeds, and downrange distances for CellTracker logs. It also recalulates LINK-TLM ascent rates and ground speeds by callsign to improve accuracy. 
+`help(package = "BalloonDataAnalysis")`
+
+To view documentation for a specific function once the package is loaded, either run `help(function_name)`, or just `?function_name`
+
+The main function in this library is `read.payload`. It imports data from the log formats of several sources (currently LINK-TLM, CellTracker, preparsed APRS, and IRENE) into useable and standardized data structures in `R`, adjusts timestamps to local time, and also calculates ascent rates, ground speeds, and downrange distances for CellTracker logs. It also recalulates LINK-TLM ascent rates and ground speeds by callsign to improve accuracy. 
 
 The function takes a string file path to the logfile, and also requires that you specify the source (payload) of the log, as well as the flight number, if it is not already in the name of the file. You can optionally specify start and end times, and `read.payload` will discard entries outside those times and return a truncated dataset.
 
