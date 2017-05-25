@@ -7,19 +7,31 @@ This R package performs data parsing and anaylsis tools useful to the University
 ### Installation
 Make sure R is installed, and open a new R session (console). 
 
-Install the "devtools" package: `install.packages("devtools")`
+Install the "devtools" package: 
 
-Now you can use devtools to install BalloonDataAnalysis from GitHub: `devtools::install_github("UMDBPP/BalloonDataAnalysis")`
+`install.packages("devtools")`
 
-### Usage
+Now you can use devtools to install BalloonDataAnalysis from GitHub: 
 
-In an R session, load the package: `library(BalloonDataAnalysis)`
+`devtools::install_github("UMDBPP/BalloonDataAnalysis")`
 
-In R, use `help()` to view documentation and usage instructions (or precede the commande with a question mark `?`).
+### Usage and Examples
 
-To view all documentation for this package, run `help(package = "BalloonDataAnalysis")`
+In an R session, load the package using the following command: 
 
-To view documentation for a specific function once the package is loaded, either run `help(read.payload)`, or just `?read.payload`
+`library(BalloonDataAnalysis)`
+
+In R, to view documentation and usage instructions of a specific command or package, use `help(name_of_command)` (or precede the command with a question mark `?name_of_command`). For example, to view all documentation for this package, run `help(package = "BalloonDataAnalysis")`, and to view documentation for a specific function once the package is loaded, either run `help(read.payload)`, or just `?read.payload`
+
+The main function of BalloonDataAnalysis is `read.payload`. It imports data from the log formats of several payloads (currently LINK-TLM, CellTracker, and IRENE) into useable and standardized data structures in R, adjusts timestamps to local time, and also calculates ascent rates, ground speeds, and downrange distances for CellTracker logs. It also recalulates LINK-TLM ascent rates and ground speeds by callsign to improve accuracy. 
+
+The function takes a string file path to the logfile, and also requires that you specify the source (payload) of the log. You can optionally specify start and end times, and `read.payload` will discard entries outside those times and return a truncated dataset.
+
+In the case of LINK-TLM, whose logs can be either `.json` or `.txt`, either format will work.
+
+For example, to import LINK-TLM data from NS57, run 
+
+`NS57.Coord <- read.payload(logfile = "NS57LaunchData.txt", data_source = "LINK-TLM", flight_number = "NS57", start_time = "07:50:31", end_time = "09:27:34")`
 
 ### Functions
 
