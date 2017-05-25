@@ -1,9 +1,9 @@
 # BalloonDataAnalysis
 This `R` package performs data parsing and analysis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
 
-[`R`](https://www.r-project.org/) is a versatile scripting language made for statistical applications, data analysis, and visualization. It is very similar to `MATLAB` in the way it approaches data structures; however, I think `R` is much easier to use and understand.
+[`R` is a versatile scripting language designed for statistics and graphing](https://www.r-project.org/). It is very similar to `MATLAB` in the way it approaches data structures; however, I think `R` is much easier to use and understand.
 
-[Click here if you are already familiar with `MATLAB` and would like to know analagous commands in `R`](http://mathesaurus.sourceforge.net/octave-r.html)
+[Click here if you are already familiar with `MATLAB`, and would like to learn analagous commands in `R`](http://mathesaurus.sourceforge.net/octave-r.html)
 
 ### Installation
 If you have not installed `R`, [you can download it from here](https://cloud.r-project.org/).
