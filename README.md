@@ -1,23 +1,25 @@
 # BalloonDataAnalysis
-`R` scripts for analyzing and visualizing balloon data
+R scripts for analyzing and visualizing balloon data
 
-`R` (https://www.r-project.org/) is a versatile scripting language made for statistical applications, data analysis, and visualization. To compare `R` to MATLAB would be like the difference between Python and C++.
-This `R` package performs data parsing and anaylsis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
+R (https://www.r-project.org/) is a versatile scripting language made for statistical applications, data analysis, and visualization. To compare R to MATLAB would be like the difference between Python and C++.
+This R package performs data parsing and anaylsis tools useful to the University of Maryland Balloon Payload Program (UMDBPP).
 
 ### Installation
-Make sure `R` is installed, and open a new `R` session (console). 
+Make sure R is installed, and open a new R session (console). 
 
-Install the `devtools` package: `install.packages("devtools")`
+Install the "devtools" package: `install.packages("devtools")`
 
-Install from GitHub: `devtools::install_github("UMDBPP/BalloonDataAnalysis")`
+Now you can use devtools to install BalloonDataAnalysis from GitHub: `devtools::install_github("UMDBPP/BalloonDataAnalysis")`
 
 ### Usage
 
-In an `R` session, load the package: `library(BalloonDataAnalysis)`
+In an R session, load the package: `library(BalloonDataAnalysis)`
 
-In `R`, use `help()` to view documentation and usage instructions.
+In R, use `help()` to view documentation and usage instructions (or precede the commande with a question mark `?`).
 
 To view all documentation for this package, run `help(package = "BalloonDataAnalysis")`
+
+To view documentation for a specific function once the package is loaded, either run `help(read.payload)`, or just `?read.payload`
 
 ### Functions
 
