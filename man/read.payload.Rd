@@ -4,13 +4,13 @@
 \alias{read.payload}
 \title{Read UMDBPP payload data from file}
 \usage{
-read.payload(logfile, data_source, flight_number, flight_date = NULL,
+read.payload(file, data_source, flight_number = NULL, flight_date = NULL,
   start_time = NULL, end_time = NULL, timezone = Sys.timezone())
 }
 \arguments{
-\item{logfile}{Path to CSV log file.}
+\item{file}{Path to log file.}
 
-\item{data_source}{Source from which data originated, from the list c("LINK-TLM", "CellTracker", "IRENE").}
+\item{data_source}{Source from which data originated, from the list c("LINK-TLM", "CellTracker", "APRS", "IRENE").}
 
 \item{flight_number}{Flight designation.}
 
@@ -32,14 +32,15 @@ It standardizes units and calculates ascent rate, ground speed, and downrange di
 \examples{
 \dontrun{
 NS57.Coord <- read.payload("NS57_parsedPackets.txt", 
-        "LINK-TLM", 
-        "NS57", 
+        data_source = "LINK-TLM", 
+        flight_number = "NS57", 
         start_time = "07:50:31", 
         end_time = "09:27:34"
 )
+
 NS57.Rad <- read.payload("NS57LaunchData.txt", 
-        "IRENE", 
-        "NS57", 
+        data_source = "IRENE", 
+        flight_number = "NS57", 
         start_time = "07:50:31", 
         end_time = "09:27:34"
 )

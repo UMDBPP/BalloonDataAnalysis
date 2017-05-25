@@ -23,9 +23,9 @@ In an R session, load the package using the following command:
 
 In R, to view documentation and usage instructions of a specific command or package, use `help(name_of_command)` (or precede the command with a question mark `?name_of_command`). For example, to view all documentation for this package, run `help(package = "BalloonDataAnalysis")`, and to view documentation for a specific function once the package is loaded, either run `help(read.payload)`, or just `?read.payload`
 
-The main function of BalloonDataAnalysis is `read.payload`. It imports data from the log formats of several payloads (currently LINK-TLM, CellTracker, and IRENE) into useable and standardized data structures in R, adjusts timestamps to local time, and also calculates ascent rates, ground speeds, and downrange distances for CellTracker logs. It also recalulates LINK-TLM ascent rates and ground speeds by callsign to improve accuracy. 
+The main function of BalloonDataAnalysis is `read.payload`. It imports data from the log formats of several payloads (currently LINK-TLM, CellTracker, APRS, and IRENE) into useable and standardized data structures in R, adjusts timestamps to local time, and also calculates ascent rates, ground speeds, and downrange distances for CellTracker logs. It also recalulates LINK-TLM ascent rates and ground speeds by callsign to improve accuracy. 
 
-The function takes a string file path to the logfile, and also requires that you specify the source (payload) of the log. You can optionally specify start and end times, and `read.payload` will discard entries outside those times and return a truncated dataset.
+The function takes a string file path to the logfile, and also requires that you specify the source (payload) of the log, as well as the flight number, if it is not already in the name of the file. You can optionally specify start and end times, and `read.payload` will discard entries outside those times and return a truncated dataset.
 
 In the case of LINK-TLM, whose logs can be either `.json` or `.txt`, either format will work.
 
