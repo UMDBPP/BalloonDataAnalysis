@@ -158,7 +158,7 @@ read.payload <-
             # remove all rows containing 0 (no signal)
             parsed_data[parsed_data == 0] <- NA
             parsed_data <-
-                parsed_data[complete.cases(parsed_data),]
+                parsed_data[complete.cases(parsed_data), ]
 
             # convert to POSIXct timestamps
             parsed_data$DateTime <-
@@ -197,7 +197,7 @@ read.payload <-
             # remove all rows containing 0 (no signal)
             parsed_data[parsed_data == 0] <- NA
             parsed_data <-
-                parsed_data[complete.cases(parsed_data),]
+                parsed_data[complete.cases(parsed_data), ]
 
             # convert to POSIXct timestamps
             parsed_data$DateTime <-
@@ -231,7 +231,7 @@ read.payload <-
 
         # reorder rows by timestamp
         parsed_data <-
-            parsed_data[order(parsed_data$DateTime),]
+            parsed_data[order(parsed_data$DateTime), ]
 
         # extract flight date from timestamp if not given
         if (is.null(flight_date))
@@ -299,10 +299,10 @@ read.payload <-
                 source_log$Ground_Speed_m_s <-
                     geosphere::distGeo(as.matrix(source_log[c("Longitude", "Latitude")]),
                                        as.matrix(source_log[c(1, 1:(nrow(source_log) - 1)), c("Longitude", "Latitude")])) /
-                    as.numeric(source_log$DateTime - source_log$DateTime[1, 1:(nrow(source_log) - 1)],
+                    as.numeric(source_log$DateTime - source_log$DateTime[c(1, 1:(nrow(source_log) - 1))],
                                units = "secs")
 
-                parsed_data[parsed_data$Callsign == source_name, ] <-
+                parsed_data[parsed_data$Callsign == source_name,] <-
                     source_log
             }
         }
@@ -322,7 +322,7 @@ read.payload <-
             parsed_data$Ground_Speed_m_s <-
                 geosphere::distGeo(as.matrix(parsed_data[c("Longitude", "Latitude")]),
                                    as.matrix(parsed_data[c(1, 1:(nrow(parsed_data) - 1)), c("Longitude", "Latitude")])) /
-                as.numeric(parsed_data$DateTime - parsed_data$DateTime[1, 1:(nrow(parsed_data) - 1)], units = "secs")
+                as.numeric(parsed_data$DateTime - parsed_data$DateTime[c(1, 1:(nrow(parsed_data) - 1))], units = "secs")
 
             # reorder columns
             if (data_source == "CellTracker")
@@ -346,14 +346,14 @@ read.payload <-
         # add data source column
         parsed_data$Flight <- flight_number
 
+        # replace NaN values with 0
+        parsed_data[is.na(parsed_data)] <- 0
+
         return(parsed_data)
     }
 
 .rates <- function(positions, times)
 {
-    output <-
-        (positions - positions[1, 1:(length(positions) - 1)]) /
-        as.numeric(times - times[1, 1:(length(times) - 1)], units = "secs")
-
-    return(output)
+    return((positions - positions[c(1, 1:(length(positions) - 1))]) /
+               as.numeric(times - times[c(1, 1:(length(times) - 1))], units = "secs"))
 }
