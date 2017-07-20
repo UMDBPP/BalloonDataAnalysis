@@ -3,6 +3,7 @@
 export(join.interpolate)
 export(map.points)
 export(read.payload)
+importFrom(geosphere,distGeo)
 importFrom(ggmap,get_map)
 importFrom(ggmap,ggmap)
 importFrom(ggplot2,aes_string)

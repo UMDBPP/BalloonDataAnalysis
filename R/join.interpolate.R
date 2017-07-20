@@ -15,38 +15,40 @@
 #'
 
 join.interpolate <-
-  function(data_1,
-           data_2,
-           by = c("DateTime", "Data_Source", "Flight"),
-           exclude = NULL)
-  {
-    # outer join tables by key
-    joined_data <-
-      merge(
-        x = data_1,
-        y = data_2,
-        by = c(by),
-        all = TRUE
-      )
-
-    # replace NA values with interpolated values using zoo package
-    if (any(is.na(joined_data)))
+    function(data_1,
+             data_2,
+             by = c("DateTime", "Data_Source", "Flight"),
+             exclude = NULL)
     {
-      data_types <- lapply(joined_data, class)
+        # outer join tables by key
+        joined_data <-
+            merge(
+                x = data_1,
+                y = data_2,
+                by = c(by),
+                all = TRUE
+            )
 
-      for (column in colnames(joined_data))
-      {
-        if ("numeric" %in% data_types[[column]] |
-            "integer" %in% data_types[[column]] &
-            !(column %in% by) &
-            !(column %in% exclude))
+        # replace NA values with interpolated values using zoo package
+        if (any(is.na(joined_data)))
         {
-          joined_data[[column]] <-
-            zoo::na.fill(zoo::na.approx(joined_data[[column]], joined_data[[by[1]]], na.rm = FALSE),
-                         "extend")
-        }
-      }
-    }
+            data_types <- lapply(joined_data, class)
 
-    return(joined_data)
-  }
+            for (column in colnames(joined_data))
+            {
+                if ("numeric" %in% data_types[[column]] |
+                    "integer" %in% data_types[[column]] &
+                    !(column %in% by) &
+                    !(column %in% exclude))
+                {
+                    requireNamespace("zoo")
+
+                    joined_data[[column]] <-
+                        zoo::na.fill(zoo::na.approx(joined_data[[column]], joined_data[[by[1]]], na.rm = FALSE),
+                                     "extend")
+                }
+            }
+        }
+
+        return(joined_data)
+    }

@@ -19,8 +19,6 @@ map.points <-
     function(location_data,
              zoom = 10)
     {
-        requireNamespace("ggmap")
-
         if ("Flight" %in% colnames(location_data))
         {
             title = location_data$Flight
@@ -39,17 +37,21 @@ map.points <-
                 max(location_data$Latitude)
             )
 
+        requireNamespace("ggmap")
+
         # get underlying terrain map
         map <-
-            get_map(location = boundaries,
-                    scale = 2,
-                    maptype = "terrain")
+            ggmap::get_map(location = boundaries,
+                           scale = 2,
+                           maptype = "terrain")
+
+        requireNamespace("ggplot2")
 
         # plot base layer to map tile
-        ggmap(map, extent = "normal") + coord_quickmap() +
-            geom_point(data = location_data,
-                       aes_string(x = "Longitude",
-                                  y = "Latitude")) +
-            geom_path(data = location_data, aes_string(x = "Longitude", y = "Latitude")) +
-            labs(title = title, x = NULL, y = NULL)
+        ggmap(map, extent = "normal") + ggplot2::coord_quickmap() +
+            ggplot2::geom_point(data = location_data,
+                                ggplot2::aes_string(x = "Longitude",
+                                                    y = "Latitude")) +
+            ggplot2::geom_path(data = location_data, ggplot2::aes_string(x = "Longitude", y = "Latitude")) +
+            ggplot2::labs(title = title, x = NULL, y = NULL)
     }
