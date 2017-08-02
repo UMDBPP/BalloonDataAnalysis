@@ -4,19 +4,23 @@
 \alias{join.interpolate}
 \title{Join datasets and interpolate missing fields}
 \usage{
-join.interpolate(data_1, data_2, by = c("DateTime", "Data_Source", "Flight"))
+join.interpolate(data_1, data_2, by = c("DateTime", "Data_Source", "Flight"),
+  exclude = NULL)
 }
 \arguments{
 \item{data_1}{First dataset.}
 
 \item{data_2}{Second dataset.}
 
-\item{by}{One or more key with which to join datasets, ordered by priority.}
+\item{by}{One or more keys with which to join datasets, ordered by priority.}
+
+\item{exclude}{List of column names to exclude from interpolation.}
 }
 \description{
-Merges datasets, for instance IRENE and LINK-TLM
+Merges datasets, for instance IRENE and LINK-TLM, and interpolates numeric data to replace NA.
 }
 \examples{
-interpolated_dataset <- join.interpolate(NS57.Coord, NS57.Rad)
+NS57.RadCoord <- join.interpolate(NS57.Coord, NS57.Rad, exclude = c("Reading", "Unit"))
+plot(NS57.RadCoord$Reading, NS57.RadCoord$Altitude_m)
 
 }

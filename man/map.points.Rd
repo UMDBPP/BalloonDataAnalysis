@@ -13,7 +13,6 @@ map.points(location_data, zoom = 10)
 }
 \description{
 Plots given longitudes and latitudes onto a Google map tile of the area.
-Pass a list to "color" to represent data graphically.
 }
 \examples{
 map.points(NS57.Coord)

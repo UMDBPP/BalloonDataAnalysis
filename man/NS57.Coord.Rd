@@ -4,7 +4,7 @@
 \name{NS57.Coord}
 \alias{NS57.Coord}
 \title{LINK-TLM Data}
-\format{An object of class \code{data.frame} with 192 rows and 10 columns.}
+\format{An object of class \code{data.frame} with 114 rows and 10 columns.}
 \usage{
 NS57.Coord
 }
