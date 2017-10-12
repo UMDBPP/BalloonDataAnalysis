@@ -16,42 +16,59 @@
 #' map.points(NS57.Coord)
 
 map.points <-
-    function(location_data,
-             zoom = 10)
+  function(location_data,
+           colour = NULL,
+           zoom = 10)
+  {
+    if ("Flight" %in% colnames(location_data))
     {
-        if ("Flight" %in% colnames(location_data))
-        {
-            title = location_data$Flight
-        }
-        else
-        {
-            title = NULL
-        }
-
-        # get map boundaries (min lon, min lat, max lon, max lat)
-        boundaries <-
-            c(
-                min(location_data$Longitude),
-                min(location_data$Latitude),
-                max(location_data$Longitude),
-                max(location_data$Latitude)
-            )
-
-        requireNamespace("ggmap")
-
-        # get underlying terrain map
-        map <-
-            ggmap::get_map(location = boundaries,
-                           scale = 2,
-                           maptype = "terrain")
-
-        requireNamespace("ggplot2")
-
-        # plot base layer to map tile
-        ggmap(map, extent = "normal") + ggplot2::coord_quickmap() +
-            ggplot2::geom_point(data = location_data,
-                                ggplot2::aes_string(x = "Longitude",
-                                                    y = "Latitude")) +
-            ggplot2::geom_path(data = location_data, ggplot2::aes_string(x = "Longitude", y = "Latitude")) +
-            ggplot2::labs(title = title, x = NULL, y = NULL)
+      title = location_data$Flight
     }
+    else
+    {
+      title = NULL
+    }
+
+    # get map boundaries (min lon, min lat, max lon, max lat)
+    boundaries <-
+      c(
+        min(location_data$Longitude),
+        min(location_data$Latitude),
+        max(location_data$Longitude),
+        max(location_data$Latitude)
+      )
+
+    requireNamespace("ggmap")
+
+    # get underlying terrain map
+    map <-
+      ggmap::get_map(
+        location = boundaries,
+        scale = 2,
+        zoom = zoom,
+        maptype = "terrain"
+      )
+
+    requireNamespace("ggplot2")
+
+    if (!is.null(colour))
+    {
+      if (class(colour) == "character")
+      {
+        colour <- location_data[[colour]]
+      }
+    }
+    else
+    {
+      colour <- "black"
+    }
+
+    # plot base layer to map tile
+    ggmap(map,
+          base_layer = ggplot2::ggplot(data = location_data,
+                                       ggplot2::aes(x = Longitude, y = Latitude, colour = colour)),
+          extent = "normal") +
+      ggplot2::coord_quickmap() +
+      ggplot2::geom_path() + ggplot2::geom_point() +
+      ggplot2::labs(title = title, x = NULL, y = NULL)
+  }
