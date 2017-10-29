@@ -4,7 +4,7 @@
 \alias{map.points}
 \title{Plot coordinate pairs onto Google map tile}
 \usage{
-map.points(location_data, zoom = 10)
+map.points(location_data, colour = NULL, zoom = 10)
 }
 \arguments{
 \item{location_data}{Dataset with latitude longitude pairs.}
