@@ -361,6 +361,8 @@ read.payload <-
 
 .rates <- function(positions, times)
 {
-  return((positions - positions[c(1, 1:(length(positions) - 1))]) /
-           as.numeric(times - times[c(1, 1:(length(times) - 1))], units = "secs"))
+  output_rates = (positions - positions[c(1, 1:(length(positions) - 1))]) /
+    as.numeric(times - times[c(1, 1:(length(times) - 1))], units = "secs")
+  output_rates[is.nan(output_rates)] <- 0
+  return(output_rates)
 }
