@@ -10,6 +10,7 @@
 #' @param start_time Time in 24 hour "HH:MM:SS" format. If a time is given, dataset will be cut to after start time.
 #' @param end_time Time in 24 hour "HH:MM:SS" format. If a time is given, dataset will be cut to before end time.
 #' @param timezone Timezone of launch. Run OlsonNames for a list of accepted timezones.
+#' @param callsign Callsign of data, in the case of single-callsign APRS data.
 #' @return Returns data frame of parsed payload data, standardized to POSIXct timestamps and SI units.
 #' @export
 #' @importFrom utils read.csv
@@ -43,7 +44,8 @@ read.payload <-
            flight_date = NULL,
            start_time = NULL,
            end_time = NULL,
-           timezone = Sys.timezone())
+           timezone = Sys.timezone(),
+           callsign = NULL)
   {
     if (!(data_source %in% c("LINK-TLM", "CellTracker", "APRS", "IRENE")))
     {
@@ -152,7 +154,7 @@ read.payload <-
     {
       internal_timezone <- timezone
 
-      parsed_data <- read.csv(file, row.names = NULL)
+      parsed_data <- read.csv(file, row.names = NULL)[1:4]
 
       # rename columns
       colnames(parsed_data) <- c("DateTime",
@@ -162,14 +164,25 @@ read.payload <-
 
       # remove all rows containing 0 (no signal)
       parsed_data[parsed_data == 0] <- NA
-      parsed_data <-
-        parsed_data[complete.cases(parsed_data), ]
+      #parsed_data <-
+      #  parsed_data[complete.cases(parsed_data), ]
 
       # convert to POSIXct timestamps
       parsed_data$DateTime <-
-        as.POSIXct(paste(flight_date, parsed_data$DateTime),
-                   "%Y-%m-%d %T",
-                   tz = internal_timezone)
+        as.POSIXct(format(as.POSIXct(parsed_data$DateTime, tz = internal_timezone), tz = Sys.timezone()))
+
+      # remove duplicate packets
+      for (value in unique(paste(parsed_data$Latitude, parsed_data$Longitude, parsed_data$Altitude_m)))
+      {
+        if (nrow(parsed_data[paste(parsed_data$Latitude, parsed_data$Longitude, parsed_data$Altitude_m) == value, c(2:4)]) > 1)
+        {
+          parsed_data[paste(parsed_data$Latitude, parsed_data$Longitude, parsed_data$Altitude_m) == value, c(2:4)][-1,] <- 0
+        }
+
+      }
+
+      parsed_data[parsed_data[2] == 0 & parsed_data[3] == 0 & parsed_data[4] == 0, c(2:4)] <- NA
+      parsed_data <- parsed_data[complete.cases(parsed_data), ]
     }
     else if (data_source == "CellTracker")
     {
@@ -242,7 +255,7 @@ read.payload <-
     # extract flight date from timestamp if not given
     if (is.null(flight_date))
     {
-      flight_date <- as.Date(median(parsed_data$DateTime))
+      flight_date <- as.Date(parsed_data$DateTime[1])
     }
 
     # if start and / or end times are not given, use first and / or last entries respectively
@@ -345,6 +358,12 @@ read.payload <-
 
       # reorder columns
       parsed_data <- parsed_data[c(3, 1, 2)]
+    }
+
+    # add callsign column
+    if (!is.null(callsign))
+    {
+      parsed_data$Callsign <- callsign
     }
 
     # add data source column
