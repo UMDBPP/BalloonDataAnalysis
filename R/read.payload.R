@@ -268,7 +268,7 @@ read.payload <-
       launch_data <-
         tail(subset(parsed_data,
                     subset = parsed_data$DateTime <= as.POSIXct(
-                      paste(flight_date, start_time, timezone)
+                      paste(flight_date, start_time), tz = timezone
                     )),
              n = 1)
     }
@@ -282,7 +282,7 @@ read.payload <-
       landing_data <-
         head(subset(parsed_data,
                     subset = parsed_data$DateTime >= as.POSIXct(
-                      paste(flight_date, end_time, timezone)
+                      paste(flight_date, end_time), tz = timezone
                     )),
              n = 1)
     }
