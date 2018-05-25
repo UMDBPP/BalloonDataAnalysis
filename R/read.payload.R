@@ -169,20 +169,32 @@ read.payload <-
 
       # convert to POSIXct timestamps
       parsed_data$DateTime <-
-        as.POSIXct(format(as.POSIXct(parsed_data$DateTime, tz = internal_timezone), tz = Sys.timezone()))
+        as.POSIXct(format(
+          as.POSIXct(parsed_data$DateTime, tz = internal_timezone),
+          tz = Sys.timezone()
+        ))
 
       # remove duplicate packets
-      for (value in unique(paste(parsed_data$Latitude, parsed_data$Longitude, parsed_data$Altitude_m)))
+      for (value in unique(paste(
+        parsed_data$Latitude,
+        parsed_data$Longitude,
+        parsed_data$Altitude_m
+      )))
       {
-        if (nrow(parsed_data[paste(parsed_data$Latitude, parsed_data$Longitude, parsed_data$Altitude_m) == value, c(2:4)]) > 1)
+        if (nrow(parsed_data[paste(parsed_data$Latitude,
+                                   parsed_data$Longitude,
+                                   parsed_data$Altitude_m) == value, c(2:4)]) > 1)
         {
-          parsed_data[paste(parsed_data$Latitude, parsed_data$Longitude, parsed_data$Altitude_m) == value, c(2:4)][-1,] <- 0
+          parsed_data[paste(parsed_data$Latitude,
+                            parsed_data$Longitude,
+                            parsed_data$Altitude_m) == value, c(2:4)][-1, ] <- 0
         }
 
       }
 
-      parsed_data[parsed_data[2] == 0 & parsed_data[3] == 0 & parsed_data[4] == 0, c(2:4)] <- NA
-      parsed_data <- parsed_data[complete.cases(parsed_data), ]
+      parsed_data[parsed_data[2] == 0 &
+                    parsed_data[3] == 0 & parsed_data[4] == 0, c(2:4)] <- NA
+      parsed_data <- parsed_data[complete.cases(parsed_data),]
     }
     else if (data_source == "CellTracker")
     {
@@ -213,16 +225,18 @@ read.payload <-
                                  "Altitude_m",
                                  "Signal_Strength")
 
-      # remove all rows containing 0 (no signal)
+      # turn 0 (no signal) to NA
       parsed_data[parsed_data == 0] <- NA
-      parsed_data <-
-        parsed_data[complete.cases(parsed_data), ]
 
       # convert to POSIXct timestamps
       parsed_data$DateTime <-
         as.POSIXct(paste(flight_date, parsed_data$DateTime),
                    "%Y-%m-%d %T",
                    tz = internal_timezone)
+
+      # remove rows with NA
+      parsed_data <-
+        parsed_data[complete.cases(parsed_data),]
     }
     else if (data_source == "IRENE")
     {
