@@ -193,7 +193,8 @@ read.payload <-
 
       internal_timezone <- "Zulu"
 
-      parsed_data <- read.csv(file, row.names = NULL)
+      parsed_data <-
+        read.csv(file, row.names = NULL, header = FALSE)
 
       # check for degree-minute-second coordinate format and convert to decimal coordinates
       if (ncol(parsed_data) == 9)
@@ -232,7 +233,7 @@ read.payload <-
       parsed_data <- read.csv(file)
 
       # remove empty lines
-      parsed_data <- parsed_data[complete.cases(parsed_data), ]
+      parsed_data <- parsed_data[complete.cases(parsed_data),]
 
       # rename columns
       colnames(parsed_data) <-
@@ -250,7 +251,7 @@ read.payload <-
 
     # reorder rows by timestamp
     parsed_data <-
-      parsed_data[order(parsed_data$DateTime), ]
+      parsed_data[order(parsed_data$DateTime),]
 
     # extract flight date from timestamp if not given
     if (is.null(flight_date))
@@ -266,11 +267,11 @@ read.payload <-
     else
     {
       launch_data <-
-        tail(subset(parsed_data,
-                    subset = parsed_data$DateTime <= as.POSIXct(
-                      paste(flight_date, start_time), tz = timezone
-                    )),
-             n = 1)
+        tail(subset(
+          parsed_data,
+          subset = parsed_data$DateTime <= as.POSIXct(paste(flight_date, start_time), tz = timezone)
+        ),
+        n = 1)
     }
 
     if (is.null(end_time))
@@ -280,11 +281,11 @@ read.payload <-
     else
     {
       landing_data <-
-        head(subset(parsed_data,
-                    subset = parsed_data$DateTime >= as.POSIXct(
-                      paste(flight_date, end_time), tz = timezone
-                    )),
-             n = 1)
+        head(subset(
+          parsed_data,
+          subset = parsed_data$DateTime >= as.POSIXct(paste(flight_date, end_time), tz = timezone)
+        ),
+        n = 1)
     }
 
     if (!is.null(start_time) | !is.null(end_time))
@@ -322,7 +323,7 @@ read.payload <-
           as.numeric(source_log$DateTime - source_log$DateTime[c(1, 1:(nrow(source_log) - 1))],
                      units = "secs")
 
-        parsed_data[parsed_data$Callsign == source_name,] <-
+        parsed_data[parsed_data$Callsign == source_name, ] <-
           source_log
       }
     }
